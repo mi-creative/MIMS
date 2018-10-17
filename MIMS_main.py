@@ -8,8 +8,6 @@ sys.path.append("..")
 from ext import *
 from physicsGenerator import *
 
-# from basis of tutorial:
-# https://web.archive.org/web/20180210054803/http://www.binpress.com:80/tutorial/building-a-text-editor-with-pyqt-part-one/143
 
 class Main(QtWidgets.QMainWindow):
 
