@@ -13,10 +13,12 @@ class createTopo(QtWidgets.QDialog):
 
         self.parent = parent
 
+        # state values for string generation
         self.indexMassParam = False
         self.indexStiffnessParam = False
         self.indexDampingParam = False
         self.indexZoscParam = False
+
 
         self.hasInternalDamping = False
 

@@ -8,6 +8,8 @@ sys.path.append("..")
 from ext import *
 from physicsGenerator import *
 
+version = "0.1"
+
 
 class Main(QtWidgets.QMainWindow):
 
@@ -186,7 +188,7 @@ class Main(QtWidgets.QMainWindow):
         # x and y coordinates on the screen, width, height
         self.setGeometry(100,100,900,600)
 
-        self.setWindowTitle("GenPhyMdl Scripting Interface")
+        self.setWindowTitle("Mass Interaction Model Scripter - MIMS v" + version)
 
         self.textEdit.textChanged.connect(self.changed)
 
@@ -230,7 +232,7 @@ class Main(QtWidgets.QMainWindow):
             self.filename += ".mdl"
 
         with open(self.filename, "wt") as file:
-            file.write(self.textEdit.toHtml())
+            file.write(self.textEdit.toPlainText())
 
     # Factorise this with the regular save button !
     def saveAs(self):
@@ -240,7 +242,7 @@ class Main(QtWidgets.QMainWindow):
         if not self.filename.endswith(".mdl"):
             self.filename += ".mdl"
         with open(self.filename, "wt") as file:
-            file.write(self.textEdit.toHtml())
+            file.write(self.textEdit.toPlainText())
 
     def compile(self):
         # PYQT5 Returns a tuple in PyQt5, we only need the filename
