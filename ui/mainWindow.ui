@@ -149,7 +149,14 @@
         <item>
          <widget class="QPushButton" name="compileButton">
           <property name="text">
-           <string>Compile !</string>
+           <string>Compile into gen~ !</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="faustButton">
+          <property name="text">
+           <string>Compile into Faust script !</string>
           </property>
          </widget>
         </item>
@@ -180,10 +187,6 @@ p, li { white-space: pre-wrap; }
      </layout>
     </item>
    </layout>
-   <zorder>gridLayoutWidget</zorder>
-   <zorder>gridLayoutWidget</zorder>
-   <zorder>textEdit</zorder>
-   <zorder>horizontalSpacer</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

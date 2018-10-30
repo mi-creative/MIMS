@@ -95,27 +95,32 @@ def createMembrane(sizeL, sizeH, name, M, K, Z, hasZosc, Zosc,
     # now we can generate the membrane
     mList = []
     # Create the rows of masses
-    for j in sizeL:
-        for i in  sizeH:
+    for j in range(0,sizeL):
+        for i in range(0,sizeH):
             index = "@" + name + "_m" + str(j) + "_" + str(i)
             s += index + " mass " + massVal + " 0. 0.\n"
             mList.append(index)
     s += "\n"
 
+    sprIndex = 0
+
     # horizontal connections
-    for j in sizeL:
-        for i in sizeH:
-            s += "@" + name + "_r" + " spring "
+    for j in range(0,sizeL):
+        for i in range(0,sizeH-1):
+            s += "@" + name + "_r" + str(sprIndex) + " spring "
             s += mList[j * (sizeH - 1) + i + j] + " " + mList[j * (sizeH - 1) + i + 1 + j]
             s += " " + stiffVal + " " + dampVal + "\n"
+            sprIndex += 1
     s += "\n"
 
+
     # vertical connections
-    for j in sizeL:
-        for i in sizeH:
-            s += "@" + name + "_r" + " spring "
+    for j in range(0,sizeL-1):
+        for i in range(0,sizeH):
+            s += "@" + name + "_r" + str(sprIndex) + " spring "
             s += mList[j * (sizeH) + i] + " " + mList[(j + 1) * (sizeH) + i]
             s += " " + stiffVal + " " + dampVal + "\n"
+            sprIndex += 1
     s += "\n"
     return s
 

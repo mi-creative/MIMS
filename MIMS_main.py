@@ -61,7 +61,12 @@ class Main(QtWidgets.QMainWindow):
         self.compileAction = QtWidgets.QAction(QtGui.QIcon("icons/count.png"),"Compile into Gen", self)
         self.compileAction.setStatusTip("Compile the model file into Gen DSP Code")
         self.compileAction.setShortcut("Ctrl+G")
-        self.compileAction.triggered.connect(self.faustCompile)
+        self.compileAction.triggered.connect(self.compile)
+
+        self.faustCompileAction = QtWidgets.QAction(QtGui.QIcon("icons/count.png"),"Compile into Faust DSP", self)
+        self.faustCompileAction.setStatusTip("Compile the model file into Faust DSP Code")
+        self.faustCompileAction.setShortcut("Ctrl+D")
+        self.faustCompileAction.triggered.connect(self.faustCompile)
 
         self.cutAction = QtWidgets.QAction(QtGui.QIcon("icons/cut.png"),"Cut to clipboard", self)
         self.cutAction.setStatusTip("Cut text into clipboard")
@@ -132,6 +137,7 @@ class Main(QtWidgets.QMainWindow):
         self.toolbar.addSeparator()
 
         self.toolbar.addAction(self.compileAction)
+        self.toolbar.addAction(self.faustCompileAction)
 
         self.addToolBarBreak()
 
@@ -163,6 +169,7 @@ class Main(QtWidgets.QMainWindow):
         file.addAction(self.saveAsAction)
 
         comp.addAction(self.compileAction)
+        comp.addAction(self.faustCompileAction)
         comp.addAction(self.genAction)
 
 
@@ -193,7 +200,9 @@ class Main(QtWidgets.QMainWindow):
         self.textEdit.textChanged.connect(self.changed)
 
         self.updateModelStat.connect(self.displayModelStats)
-        self.compileButton.clicked.connect(self.faustCompile)
+
+        self.compileButton.clicked.connect(self.compile)
+        self.faustButton.clicked.connect(self.faustCompile)
 
 
     def cursorPos(self):
@@ -254,11 +263,8 @@ class Main(QtWidgets.QMainWindow):
         phyGen = physicsGen.PhysicsGenParser()
         phyGen.parseModel(self.textEdit.toPlainText(),True)
         phyGen.createDspObj(self.compileTargetName)
-        print("This is where the model should be compiled.")
 
     def faustCompile(self):
-        print("Compile into Faust Code")
-
         # PYQT5 Returns a tuple in PyQt5, we only need the filename
         self.compileTargetName = QtWidgets.QFileDialog.getSaveFileName(self,
                                                               'Compile Model')[0]
@@ -270,7 +276,6 @@ class Main(QtWidgets.QMainWindow):
 
         with open(self.compileTargetName, "wt") as file:
             file.write(s)
-        # phyGen.createDspObj(self.compileTargetName)
 
     def comment(self):
         cursor = self.textEdit.textCursor()
