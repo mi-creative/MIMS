@@ -5,8 +5,8 @@ from PyQt5.QtCore import pyqtSignal, QStringListModel
 
 sys.path.append("..")
 
-from ext import *
-from physicsGenerator import *
+from ext import highlighter, createTopology, find
+from physicsGenerator import physics2Faust,physicsGen
 
 version = "0.1"
 
