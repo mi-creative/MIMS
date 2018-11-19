@@ -11,6 +11,8 @@ from physicsGenerator import *
 version = "0.1"
 
 
+# bonjour c'est JV
+
 class Main(QtWidgets.QMainWindow):
 
     updateModelStat = pyqtSignal()
