@@ -18,9 +18,6 @@ else:
 
 import physicsGenerator.phyMdlDspObjGenerator as phyMdlDspObjGenerator
 
-import sys
-
-
 
 ########################################################
 ####       Error check function: do we have enough parameters?
@@ -140,14 +137,6 @@ class PhysicsGenParser():
                         else:
                             print("Error: Wrong number of parameters for  module: " + str(l))
 
-                        # error = errorCheck(l, 5)
-                        # header, body = phyMdlCodeGenerator.genGroundCode(l[0], l[2])
-                        # self.initCode.append(header)
-                        # self.matSimCode.append(body)
-                        # self.writeSingleMotionData(l[0], l[3], l[4])
-                        # #self.initCode.append(phyMdlCodeGenerator.genGroundCode(l[0], l[2]))
-                        # self.matList.append(l[0])
-
                     if l[1] == "mass":
                         if (len(l)== 5):     # if no explicit motion data is specified
                             header, body = phyMdlCodeGenerator.genMassCode(l[0], l[2], l[3], l[4])
@@ -165,16 +154,6 @@ class PhysicsGenParser():
                         else:
                             print("Error: Wrong number of parameters for  module: " + str(l))
 
-                        # error = errorCheck(l, 7)
-                        # if (error == 0):
-                        #     header, body =  phyMdlCodeGenerator.genMassCode(l[0], l[2], l[3], l[4])
-                        #     self.structCode.append(header)
-                        #     self.matSimCode.append(body)
-                        #     self.writeSingleMotionData(l[0], l[5], l[6])
-                        #     self.matList.append(l[0])
-                        # else:
-                        #     break
-
                     if l[1] == "massG":
                         if (len(l)== 6):     # if no explicit motion data is specified
                             header, body = phyMdlCodeGenerator.genMassGravityCode(l[0], l[2], l[3], l[4], l[5])
@@ -191,15 +170,6 @@ class PhysicsGenParser():
                             self.matList.append(l[0])
                         else:
                             print("Error: Wrong number of parameters for  module: " + str(l))
-                        # error = errorCheck(l, 6)
-                        # if (error == 0):
-                        #     header, body =  phyMdlCodeGenerator.genMassGravityCode(l[0], l[2], l[3], l[4],l[5])
-                        #     self.structCode.append(header)
-                        #     self.matSimCode.append(body)
-                        #     self.writeSingleMotionData(l[0], l[5], l[6])
-                        #     self.matList.append(l[0])
-                        # else:
-                        #     break
 
                     if l[1] == "osc":
                         if (len(l)== 7):     # if no explicit motion data is specified
@@ -217,16 +187,6 @@ class PhysicsGenParser():
                             self.matList.append(l[0])
                         else:
                             print("Error: Wrong number of parameters for  module: " + str(l))
-
-                        # error = errorCheck(l, 9)
-                        # if (error == 0):
-                        #     header, body =  phyMdlCodeGenerator.genCelCode(l[0], l[2], l[3], l[4], l[5], l[6])
-                        #     self.structCode.append(header)
-                        #     self.matSimCode.append(body)
-                        #     self.writeSingleMotionData(l[0], l[7], l[8])
-                        #     self.matList.append(l[0])
-                        # else:
-                        #     break
 
                     if l[1] == "spring":
                         error = errorCheck(l, 6)

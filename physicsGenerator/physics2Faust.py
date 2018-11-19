@@ -71,7 +71,6 @@ class Physics2Faust():
     ########################################################
 
     def parseModel(self, modelDescr):
-        # dest = open(genCodePath,'w')
 
         error = 0
 
@@ -101,9 +100,6 @@ class Physics2Faust():
                         error = errorCheck(l, 5)
                         if (error == 0):
                             self.matModuleDict["mass"].append([l[0], l[2], l[3], l[4]])
-                            # self.massValues.append(l[2])
-                            # self.massPos.append(l[3])
-                            # self.massPosR.append(l[4])
                         else:
                             break
                     if l[1] == "osc":
@@ -117,8 +113,6 @@ class Physics2Faust():
                         error = errorCheck(l, 6)
                         if (error == 0):
                             self.linkModuleDict["spring"].append([l[0], l[2], l[3], l[4], l[5]])
-                            # self.stiffvalues.append(l[4])
-                            # self.dampValues.append(l[5])
                         else:
                             break
                     if l[1] == "detent":
@@ -277,109 +271,3 @@ class Physics2Faust():
         if debug_mode:
             print(s)
         return s
-
-
-    # def generateRoutingLinkToMass_V1(self):
-    #
-    #     nbLinks =int(np.size(self.matRoutingMatrix,1) //2)
-    #     nbMats = int(np.size(self.matRoutingMatrix, 0))
-    #
-    #     nbOut = len(self.outputMasses)
-    #
-    #     s = "model = (RoutingLinkToMass : par(i,"+ str(nbMats) +", mass(m(i), x1(i),x2(i))):RoutingMassToLink :  \
-    #     par(i,"+ str(nbLinks) + ",spring(k(i), z(i))), \
-    #     par(i, " + str(nbOut) + ",_))~par(i, "+ str(2*nbLinks) +", _): \
-    #     par(i, "+str(2*nbLinks)+",!), par(i,  "+ str(nbOut) +", _)\n"
-    #
-    #     s += "with{\n"
-    #
-    #     # Generate Link to Mat Routing Function
-    #     s += "RoutingLinkToMass("
-    #     for i in range (0,nbLinks-1):
-    #         s+= "l"+str(i)+"_f1,"
-    #         s+= "l"+str(i)+"_f2,"
-    #     s += "l" + str(nbLinks-1) + "_f1,"
-    #     s += "l" + str(nbLinks-1) + "_f2) = "
-    #
-    #     for i in range(0, nbMats):
-    #         add = 0
-    #         for j in range(0, 2 * nbLinks):
-    #             if(self.matRoutingMatrix[i][j]) == 1:
-    #                 if add:
-    #                     s += "+"
-    #                 s += "l" + str(j//2) + "_f" + str((j%2)+1)
-    #                 add = 1
-    #         if i < nbMats-1:
-    #             s += ", "
-    #         else:
-    #             s += ";"
-    #
-    #     # Generate Mat to Link Routing Function
-    #     s += '\n'
-    #     s += "RoutingMassToLink("
-    #     for i in range (0,nbMats-1):
-    #         s+= "m"+str(i)+","
-    #     s += "m" + str(nbLinks) + ") = "
-    #
-    #     for i in range(0, 2 * nbLinks):
-    #         for j in range(0, nbMats):
-    #             if(self.matRoutingMatrix[j][i]) == 1:
-    #                 if i < 2*nbLinks-1:
-    #                     s += "m" + str(j) + ", "
-    #                 else:
-    #                     s += "m" + str(j) +","
-    #
-    #     # Need to add audio out here !
-    #     for i, mass in enumerate(self.outputMasses):
-    #         if i < len(self.outputMasses) - 1:
-    #             s += "m"+str(self.matModuleMap[mass]) + ","
-    #         else:
-    #             s += "m"+str(self.matModuleMap[mass]) + ";"
-    #
-    #     s += '\n'
-    #
-    #     s+= "m(n) = ba.take(n + 1, ("
-    #     for i,mVal in enumerate(self.massValues):
-    #         if i < len(self.massValues)-1:
-    #             s += str(mVal) + ','
-    #         else:
-    #             s += str(mVal) + "));"
-    #
-    #     s += '\n'
-    #     s+= "x1(n) = ba.take(n + 1, ("
-    #     for i,xVal in enumerate(self.massPos):
-    #         if i < len(self.massPos)-1:
-    #             s += str(xVal) + ','
-    #         else:
-    #             s += str(xVal) + "));"
-    #
-    #     s += '\n'
-    #     s+= "x2(n) = ba.take(n + 1, ("
-    #     for i,xVal in enumerate(self.massPosR):
-    #         if i < len(self.massPosR)-1:
-    #             s += str(xVal) + ','
-    #         else:
-    #             s += str(xVal) + "));"
-    #
-    #     s += '\n'
-    #     s+= "k(n) = ba.take(n + 1, ("
-    #     for i,kVal in enumerate(self.stiffvalues):
-    #         if i < len(self.stiffvalues)-1:
-    #             s += str(kVal) + ','
-    #         else:
-    #             s += str(kVal) + "));"
-    #
-    #     s += '\n'
-    #     s+= "z(n) = ba.take(n + 1, ("
-    #     for i,zVal in enumerate(self.dampValues):
-    #         if i < len(self.dampValues)-1:
-    #             s += str(zVal) + ','
-    #         else:
-    #             s += str(zVal) + "));"
-    #
-    #     s += "};\nprocess = model: *(0.1), *(0.1);"
-    #
-    #     print(s)
-        #print('Nb colunms: ' + str(np.size(self.matRoutingMatrix,1)))
-        #print('Nb lines: ' + str(np.size(self.matRoutingMatrix, 0)))
-

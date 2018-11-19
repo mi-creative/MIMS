@@ -4,9 +4,6 @@ def createString(size, name, M, K, Z, hasZosc, Zosc,
                  mParamName=None, kParamName=None, zParamName=None, zoscParamName=None):
     s = ""
 
-    massVal = ""
-    stiffVal = ""
-    dampVal = ""
     zoscVal = ""
 
     if mParamName:
@@ -63,10 +60,6 @@ def createMembrane(sizeL, sizeH, name, M, K, Z, hasZosc, Zosc,
                  mParamName=None, kParamName=None, zParamName=None, zoscParamName=None,
                    mem_name = "membrane", spacing = 0.1):
     s = ""
-
-    massVal = ""
-    stiffVal = ""
-    dampVal = ""
     zoscVal = ""
 
     # Define parameter modules, if they are to be named explicitly
@@ -129,33 +122,6 @@ def createMembrane(sizeL, sizeH, name, M, K, Z, hasZosc, Zosc,
             sprIndex += 1
     s += "\n"
     return s
-
-
-    # s += "@" + name + "_s0 ground 0.\n"
-    # i = 0
-    # while i < size:
-    #     if not hasZosc:
-    #         s += "@" + name + "_m" + str(i) + " mass " + massVal + " 0. 0.\n"
-    #     else:
-    #         s += "@" + name + "_m" + str(i) + " osc " + massVal + " 0 " + zoscVal + " 0. 0.\n"
-    #     i = i + 1
-    # s += "@" + name + "_s1 ground 0.\n"
-    # s += "\n"
-    #
-    # i = 0
-    # s += "@" + name + "_r" + str(i) + " spring "
-    # s += "@" + name + "_s0 @" + name + "_m" + str(i) + " "
-    # s += stiffVal + " " + dampVal + "\n"
-    # while i < size - 1:
-    #     s += "@" + name + "_r" + str(i + 1) + " spring "
-    #     s += "@" + name + "_m" + str(i) + " @" + name + "_m" + str(i + 1) + " "
-    #     s += stiffVal + " " + dampVal + "\n"
-    #     i = i + 1
-    # s += "@" + name + "_r" + str(i + 1) + " spring "
-    # s += "@" + name + "_m" + str(i) + " @" + name + "_s1 "
-    # s += stiffVal + " " + dampVal + "\n"
-    # s += "\n"
-    # return s
 
 
 def createMembrane_OLD(sizeH, sizeL, name, M, K, Z):
