@@ -6,8 +6,16 @@
 #         code for use inside gen, then save it to an output file     #
 ######################################################
 
+## Use the library version or direct macro code generation (TODO: compare efficiency)
 
-import physicsGenerator.phyMdlCodeGenerator as phyMdlCodeGenerator
+LIB_VERSION = True
+
+# import physicsGenerator.phyMdlCodeGenerator as phyMdlCodeGenerator
+if(LIB_VERSION == True):
+    import physicsGenerator.mipeLibCodeGenerator as phyMdlCodeGenerator
+else:
+    import physicsGenerator.phyMdlCodeGenerator as phyMdlCodeGenerator
+
 import physicsGenerator.phyMdlDspObjGenerator as phyMdlDspObjGenerator
 
 import sys
@@ -35,6 +43,7 @@ class PhysicsGenParser():
         self.initCode = []
         self.matSimCode = []
         self.interactSimCode = []
+        self.motionCode = []
 
         # Error state
         self.error = 0
@@ -45,11 +54,32 @@ class PhysicsGenParser():
         self.destFolder = ""
         self.motionBufferName = "motion"
 
+        self.userBufferList = []
+
         self.generatedCode =""
         self.inputs = 0
         self.outputs = 0
 
+    def writeGenericMotionData(self, mat_name):
+        self.motionCode.append(
+            self.motionBufferName + ".poke(" + mat_name[1:] + "_X, " + str(len(self.matList)) + ", 0);\n")
 
+
+    def writeSpecificMotionData(self, mat_name, motion_name, xpos, ypos):
+        self.motionCode.append(
+            motion_name + ".poke(" + mat_name[1:] + "_X, " + str(len(self.matList)) + ", 0);\n")
+        self.motionCode.append(
+            motion_name + ".poke(" + str(xpos) + ", " + str(len(self.matList)) + ", 1);\n")
+        self.motionCode.append(
+            motion_name + ".poke(" + str(ypos) + ", " + str(len(self.matList)) + ", 2);\n")
+
+    def addMotionBufferToList(self, buffer_name):
+        if buffer_name not in self.userBufferList:
+            self.userBufferList.append(buffer_name)
+
+    def declareBufferList(self):
+        for buffer in self.userBufferList:
+            self.generatedCode += "Buffer " + buffer + ";\n"
 
     def writeMotionData(self, mList):
         cpt = 0
@@ -73,6 +103,8 @@ class PhysicsGenParser():
 
         error = 0
 
+        self.motionCode.clear()
+
         print("About to enter model generation...")
 
         compList = modelDescr.split("\n")
@@ -92,38 +124,109 @@ class PhysicsGenParser():
                         self.structCode.append(phyMdlCodeGenerator.genParamCode(l[0][1:], l[2]))
 
                     if l[1] == "ground":
-                        self.initCode.append(phyMdlCodeGenerator.genGroundCode(l[0], l[2]))
-                        self.matList.append(l[0])
+                        if (len(l)== 3):     # if no explicit motion data is specified
+                            header, body = phyMdlCodeGenerator.genGroundCode(l[0], l[2])
+                            self.initCode.append(header)
+                            self.matSimCode.append(body)
+                            self.writeGenericMotionData(l[0])
+                            self.matList.append(l[0])
+                        elif (len(l) == 6): # if specific position data is supplied
+                            header, body = phyMdlCodeGenerator.genGroundCode(l[0], l[2])
+                            self.initCode.append(header)
+                            self.matSimCode.append(body)
+                            self.writeSpecificMotionData(l[0], str(l[3]), l[4], l[5])
+                            self.addMotionBufferToList(str(l[3]))
+                            self.matList.append(l[0])
+                        else:
+                            print("Error: Wrong number of parameters for  module: " + str(l))
+
+                        # error = errorCheck(l, 5)
+                        # header, body = phyMdlCodeGenerator.genGroundCode(l[0], l[2])
+                        # self.initCode.append(header)
+                        # self.matSimCode.append(body)
+                        # self.writeSingleMotionData(l[0], l[3], l[4])
+                        # #self.initCode.append(phyMdlCodeGenerator.genGroundCode(l[0], l[2]))
+                        # self.matList.append(l[0])
 
                     if l[1] == "mass":
-                        error = errorCheck(l, 5)
-                        if (error == 0):
-                            header, body =  phyMdlCodeGenerator.genMassCode(l[0], l[2], l[3], l[4])
+                        if (len(l)== 5):     # if no explicit motion data is specified
+                            header, body = phyMdlCodeGenerator.genMassCode(l[0], l[2], l[3], l[4])
                             self.structCode.append(header)
                             self.matSimCode.append(body)
+                            self.writeGenericMotionData(l[0])
+                            self.matList.append(l[0])
+                        elif (len(l) == 8): # if specific position data is supplied
+                            header, body = phyMdlCodeGenerator.genMassCode(l[0], l[2], l[3], l[4])
+                            self.structCode.append(header)
+                            self.matSimCode.append(body)
+                            self.writeSpecificMotionData(l[0], str(l[5]), l[6], l[7])
+                            self.addMotionBufferToList(str(l[5]))
                             self.matList.append(l[0])
                         else:
-                            break
+                            print("Error: Wrong number of parameters for  module: " + str(l))
+
+                        # error = errorCheck(l, 7)
+                        # if (error == 0):
+                        #     header, body =  phyMdlCodeGenerator.genMassCode(l[0], l[2], l[3], l[4])
+                        #     self.structCode.append(header)
+                        #     self.matSimCode.append(body)
+                        #     self.writeSingleMotionData(l[0], l[5], l[6])
+                        #     self.matList.append(l[0])
+                        # else:
+                        #     break
 
                     if l[1] == "massG":
-                        error = errorCheck(l, 6)
-                        if (error == 0):
-                            header, body =  phyMdlCodeGenerator.genMassGravityCode(l[0], l[2], l[3], l[4],l[5])
+                        if (len(l)== 6):     # if no explicit motion data is specified
+                            header, body = phyMdlCodeGenerator.genMassGravityCode(l[0], l[2], l[3], l[4], l[5])
                             self.structCode.append(header)
                             self.matSimCode.append(body)
+                            self.writeGenericMotionData(l[0])
+                            self.matList.append(l[0])
+                        elif (len(l) == 9): # if specific position data is supplied
+                            header, body = phyMdlCodeGenerator.genMassGravityCode(l[0], l[2], l[3], l[4], l[5])
+                            self.structCode.append(header)
+                            self.matSimCode.append(body)
+                            self.writeSpecificMotionData(l[0], str(l[6]), l[7], l[8])
+                            self.addMotionBufferToList(str(l[6]))
                             self.matList.append(l[0])
                         else:
-                            break
+                            print("Error: Wrong number of parameters for  module: " + str(l))
+                        # error = errorCheck(l, 6)
+                        # if (error == 0):
+                        #     header, body =  phyMdlCodeGenerator.genMassGravityCode(l[0], l[2], l[3], l[4],l[5])
+                        #     self.structCode.append(header)
+                        #     self.matSimCode.append(body)
+                        #     self.writeSingleMotionData(l[0], l[5], l[6])
+                        #     self.matList.append(l[0])
+                        # else:
+                        #     break
 
                     if l[1] == "osc":
-                        error = errorCheck(l, 7)
-                        if (error == 0):
-                            header, body =  phyMdlCodeGenerator.genCelCode(l[0], l[2], l[3], l[4], l[5], l[6])
+                        if (len(l)== 7):     # if no explicit motion data is specified
+                            header, body = phyMdlCodeGenerator.genCelCode(l[0], l[2], l[3], l[4], l[5], l[6])
                             self.structCode.append(header)
                             self.matSimCode.append(body)
+                            self.writeGenericMotionData(l[0])
+                            self.matList.append(l[0])
+                        elif (len(l) == 10): # if specific position data is supplied
+                            header, body = phyMdlCodeGenerator.genCelCode(l[0], l[2], l[3], l[4], l[5], l[6])
+                            self.structCode.append(header)
+                            self.matSimCode.append(body)
+                            self.writeSpecificMotionData(l[0], str(l[7]), l[8], l[9])
+                            self.addMotionBufferToList(str(l[7]))
                             self.matList.append(l[0])
                         else:
-                            break
+                            print("Error: Wrong number of parameters for  module: " + str(l))
+
+                        # error = errorCheck(l, 9)
+                        # if (error == 0):
+                        #     header, body =  phyMdlCodeGenerator.genCelCode(l[0], l[2], l[3], l[4], l[5], l[6])
+                        #     self.structCode.append(header)
+                        #     self.matSimCode.append(body)
+                        #     self.writeSingleMotionData(l[0], l[7], l[8])
+                        #     self.matList.append(l[0])
+                        # else:
+                        #     break
 
                     if l[1] == "spring":
                         error = errorCheck(l, 6)
@@ -207,8 +310,13 @@ class PhysicsGenParser():
         ####        respecting order (structures, declarations, simcode)
         ########################################################
 
+        if(LIB_VERSION):
+            self.generatedCode += 'require(\\"mipe-lib\\");\n'
+
         if (includeMotionData == 1):
             self.generatedCode += "Buffer " + self.motionBufferName + ";\n"
+
+        self.declareBufferList()
 
         if (error == 0):
             while len(self.structCode) > 0:
@@ -225,7 +333,8 @@ class PhysicsGenParser():
                 self.generatedCode += tmp
 
             if (includeMotionData):
-                self.generatedCode += self.writeMotionData(self.matList)
+                while len(self.motionCode) > 0:
+                    self.generatedCode += self.motionCode.pop()
 
             print(self.generatedCode)
 

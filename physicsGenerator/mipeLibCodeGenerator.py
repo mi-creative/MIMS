@@ -1,7 +1,7 @@
 ######################################################
-#           File: phyMdlCodeGenerator.py                                               #
+#           File: mipeLibCodeGenerator.py                                               #
 #           Author:     James Leonard                                                            #
-#           Date:           23/03/2017                                                                  #
+#           Date:           14/11/2018                                                        #
 #         Methods for generating gendsp code for  the various     #
 #         physical modules  used in the formalism                              #
 ######################################################
@@ -26,9 +26,14 @@ def genParamCode(param, val):
 ####       Ground Module: Fixed Position
 #######################################
 def genGroundCode(name, initPos):
+
     s = name[1:] + "_X = float(" + str(initPos) + ");\n"
     s += name[1:] + "_XR = float(" + str(initPos) + ");\n"
-    return s
+    s += name[1:] + "_F = float(" + str(0) + ");\n"
+
+    eq = "ground(" + name[1:] + "_X);\n"
+
+    return s, eq
 
 
 #######################################
@@ -43,10 +48,12 @@ def genMassCode(name, mass, initPos, initPosR):
     s += "History " + xr + "(" + str(initPosR) + ");\n"
     s += "History " + f + "(0.);\n"
 
-    eq = "newPos = (" + f + ") / " + mass + " + 2 * " + x + " - " + xr + ";\n"
-    eq += xr + " = fixdenorm(" + x + ");\n"
-    eq += x + " = fixdenorm(newPos);\n"
-    eq += f + " =  (0.);\n"
+    eq = x + "," + xr + "," + f + " = mass("+ mass + "," + x + "," + xr + "," + f +");\n"
+
+    # eq = "newPos = (" + f + ") / " + mass + " + 2 * " + x + " - " + xr + ";\n"
+    # eq += xr + " = fixdenorm(" + x + ");\n"
+    # eq += x + " = fixdenorm(newPos);\n"
+    # eq += f + " =  (0.);\n"
 
     return s, eq
 
@@ -54,7 +61,7 @@ def genMassCode(name, mass, initPos, initPosR):
 ############################################
 ####       Gravity Mass Module: w/ downward force
 ############################################
-def genMassGravityCode(name, mass, initPos, initPosR, gravity):
+def genMassGravityCode(name, mass, gravity, initPos, initPosR):
     x = name[1:] + "_X"
     xr = name[1:] + "_XR"
     f = name[1:] + "_F"
@@ -62,10 +69,13 @@ def genMassGravityCode(name, mass, initPos, initPosR, gravity):
     s = "History " + x + "(" + str(initPos) + ");\n"
     s += "History " + xr + "(" + str(initPosR) + ");\n"
     s += "History " + f + "(0.);\n"
-    eq = "newPos = (" + f + " + (" + str(gravity) + ")) / " + mass + " + 2 * " + x + " - " + xr + ";\n"
-    eq += xr + " = fixdenorm(" + x + ");\n"
-    eq += x + " = fixdenorm(newPos);\n"
-    eq += f + " =  (0.);\n"
+
+    eq = x + "," + xr + "," + f + " = mass_gravity(" + mass + "," + str(gravity) + "," + x + "," + xr + "," + f + ");\n"
+
+    # eq = "newPos = (" + f + " + (" + str(gravity) + ")) / " + mass + " + 2 * " + x + " - " + xr + ";\n"
+    # eq += xr + " = fixdenorm(" + x + ");\n"
+    # eq += x + " = fixdenorm(newPos);\n"
+    # eq += f + " =  (0.);\n"
 
     return s, eq
 
@@ -81,10 +91,13 @@ def genCelCode(name, M, K, Z, initPos, initPosR):
     s = "History " + x + "(" + str(initPos) + ");\n"
     s += "History " + xr + "(" + str(initPosR) + ");\n"
     s += "History " + f + "(0.);\n"
-    eq = "newPos = (" + f + ") / " + M + " + (2 - (" + K + "+" + Z + ")/ " + M + ") * " + x + " + (" + Z + "/" + M + " - 1) * " + xr + ";\n"
-    eq += xr + " = fixdenorm(" + x + ");\n"
-    eq += x + " = fixdenorm(newPos);\n"
-    eq += f + " =  (0.);\n"
+
+    eq = x + "," + xr + "," + f + " = osc(" + M + "," + K + "," + Z + "," + x + "," + xr + "," + f + ");\n"
+
+    # eq = "newPos = (" + f + ") / " + M + " + (2 - (" + K + "+" + Z + ")/ " + M + ") * " + x + " + (" + Z + "/" + M + " - 1) * " + xr + ";\n"
+    # eq += xr + " = fixdenorm(" + x + ");\n"
+    # eq += x + " = fixdenorm(newPos);\n"
+    # eq += f + " =  (0.);\n"
 
     return s, eq
 
@@ -105,10 +118,14 @@ def genSpringCode(name, connect1, connect2, K, Z):
     f1 = connect1[1:] + "_F"
     f2 = connect2[1:] + "_F"
 
-    s = "force = (" + str(K) + ") * (" + x1 + " - " + x2 + ") + (" + str(
-        Z) + ") * ((" + x1 + "-" + x1r + ") - (" + x2 + "-" + x2r + ")) ;\n"
-    s += f1 + " +=  -force;\n"
-    s += f2 + "+= force;\n"
+    s = f1 + "," + f2 + " = spring_damper(" + K + "," + Z + "," \
+        + x1 + "," + x1r + "," +  f1 + ","\
+        + x2 + "," + x2r + ", " + f2 + ");\n"
+
+    # s = "force = (" + str(K) + ") * (" + x1 + " - " + x2 + ") + (" + str(
+    #     Z) + ") * ((" + x1 + "-" + x1r + ") - (" + x2 + "-" + x2r + ")) ;\n"
+    # s += f1 + " +=  -force;\n"
+    # s += f2 + "+= force;\n"
 
     return s
 
@@ -125,13 +142,17 @@ def genNLSpringCode(name, connect1, connect2, K, Q, Z):
     f1 = connect1[1:] + "_F"
     f2 = connect2[1:] + "_F"
 
-    s = "dist = (" + x1 + " - " + x2 + " );\n"
+    s = f1 + "," + f2 + " = nl_spring_damper(" + K + "," + Q + "," +Z + "," \
+        + x1 + "," + x1r + "," +  f1 + ","\
+        + x2 + "," + x2r + ", " + f2 + ");\n"
 
-    s += "force = (" + str(K) + ") * dist + ("
-    s += str(Q) + ") * dist*dist*dist + ("
-    s += str(Z) + ") * ((" + x1 + "-" + x1r + ") - (" + x2 + "-" + x2r + ")) ;\n"
-    s += f1 + " +=  -force;\n"
-    s += f2 + "+= force;\n"
+    # s = "dist = (" + x1 + " - " + x2 + " );\n"
+    #
+    # s += "force = (" + str(K) + ") * dist + ("
+    # s += str(Q) + ") * dist*dist*dist + ("
+    # s += str(Z) + ") * ((" + x1 + "-" + x1r + ") - (" + x2 + "-" + x2r + ")) ;\n"
+    # s += f1 + " +=  -force;\n"
+    # s += f2 + "+= force;\n"
 
     return s
 
@@ -148,11 +169,15 @@ def genDetentCode(name, connect1, connect2, K, Z, S):
     f1 = connect1[1:] + "_F"
     f2 = connect2[1:] + "_F"
 
-    s = "force = (" + str(K) + ") * (" + x1 + " - " + x2 + ") + (" + str(
-        Z) + ") * ((" + x1 + "-" + x1r + ") - (" + x2 + "-" + x2r + ")) ;\n"
-    s += "if((" + x1 + "-" + x2 + ") > (" + str(S) + "))  { force = 0.;}\n"
-    s += f1 + " +=  -force;\n"
-    s += f2 + "+= force;\n"
+    s = f1 + "," + f2 + " = detent(" + K + "," + Z + "," + S + "," \
+        + x1 + "," + x1r + "," +  f1 + ","\
+        + x2 + "," + x2r + ", " + f2 + ");\n"
+
+    # s = "force = (" + str(K) + ") * (" + x1 + " - " + x2 + ") + (" + str(
+    #     Z) + ") * ((" + x1 + "-" + x1r + ") - (" + x2 + "-" + x2r + ")) ;\n"
+    # s += "if((" + x1 + "-" + x2 + ") > (" + str(S) + "))  { force = 0.;}\n"
+    # s += f1 + " +=  -force;\n"
+    # s += f2 + "+= force;\n"
 
     return s
 
@@ -169,27 +194,32 @@ def genNLBowCode(name, connect1, connect2, Z, scale):
     f1 = connect1[1:] + "_F"
     f2 = connect2[1:] + "_F"
 
-    low_thres = "(" + scale + " / 3.)"
-    high_thres = scale
+    s = f1 + "," + f2 + " = nlBow(" + Z + "," + scale + "," \
+        + x1 + "," + x1r + "," +  f1 + ","\
+        + x2 + "," + x2r + ", " + f2 + ");\n"
 
-    dampZ = Z
-    excZ = "(-" + Z + "/4.)"
 
-    tipping_force = low_thres + " * " + dampZ
-
-    s = "force = 0.;\n"
-    s += "speed = ((" + x1 + "-" + x1r + ") - (" + x2 + "-" + x2r + "));\n"
-    s += "if(abs(speed) < " + low_thres + ")  {\n"
-    s += "force = " + str(dampZ) + " * speed ;\n"
-    s += "}\n"
-    s += "else if(abs(speed) < " + high_thres + ")  {\n"
-    s += "if(speed > 0) {"
-    s += "force = " + str(tipping_force) + " + " + str(excZ) + " * speed ;}\n"
-    s += "else { force =  - " + str(tipping_force) + " + " + str(excZ) + " * speed ;}\n"
-    s += "}\n"
-    s += "else force = 0.;\n"
-    s += f1 + " +=  -force;\n"
-    s += f2 + "+= force;\n"
+    # low_thres = "(" + scale + " / 3.)"
+    # high_thres = scale
+    #
+    # dampZ = Z
+    # excZ = "(-" + Z + "/4.)"
+    #
+    # tipping_force = low_thres + " * " + dampZ
+    #
+    # s = "force = 0.;\n"
+    # s += "speed = ((" + x1 + "-" + x1r + ") - (" + x2 + "-" + x2r + "));\n"
+    # s += "if(abs(speed) < " + low_thres + ")  {\n"
+    # s += "force = " + str(dampZ) + " * speed ;\n"
+    # s += "}\n"
+    # s += "else if(abs(speed) < " + high_thres + ")  {\n"
+    # s += "if(speed > 0) {"
+    # s += "force = " + str(tipping_force) + " + " + str(excZ) + " * speed ;}\n"
+    # s += "else { force =  - " + str(tipping_force) + " + " + str(excZ) + " * speed ;}\n"
+    # s += "}\n"
+    # s += "else force = 0.;\n"
+    # s += f1 + " +=  -force;\n"
+    # s += f2 + "+= force;\n"
 
     return s
 
@@ -229,17 +259,21 @@ def genNLPluckCode(name, connect1, connect2, K, scale):
     f1 = connect1[1:] + "_F"
     f2 = connect2[1:] + "_F"
 
-    tipping_point = "(" + scale + " * 0.5)"
+    s = f1 + "," + f2 + " = nlPluck(" + K + "," + scale + "," \
+        + x1 + "," + f1 + "," \
+        + x2 + ", " + f2 + ");\n"
 
-    s = "force = 0.;\n"
-    s += "deltapos = (" + x1 + " - " + x2 + ");\n"
-    s += "if(abs(deltapos) > " + str(scale) + ")  {force = 0.;}\n"
-    s += "else {force = " + str(K) + " * deltapos;\n"
-    s += "if(abs(deltapos) > " + tipping_point + ")  {\n"
-    s += "force = " + str(K) + " * (sign(deltapos) * "+ tipping_point  + " - deltapos);\n"
-    s += "}}\n"
-    s += f1 + " +=  -force;\n"
-    s += f2 + "+= force;\n"
+    # tipping_point = "(" + scale + " * 0.5)"
+    #
+    # s = "force = 0.;\n"
+    # s += "deltapos = (" + x1 + " - " + x2 + ");\n"
+    # s += "if(abs(deltapos) > " + str(scale) + ")  {force = 0.;}\n"
+    # s += "else {force = " + str(K) + " * deltapos;\n"
+    # s += "if(abs(deltapos) > " + tipping_point + ")  {\n"
+    # s += "force = " + str(K) + " * (sign(deltapos) * "+ tipping_point  + " - deltapos);\n"
+    # s += "}}\n"
+    # s += f1 + " +=  -force;\n"
+    # s += f2 + "+= force;\n"
 
     return s
 

@@ -60,7 +60,8 @@ def createString(size, name, M, K, Z, hasZosc, Zosc,
 
 
 def createMembrane(sizeL, sizeH, name, M, K, Z, hasZosc, Zosc,
-                 mParamName=None, kParamName=None, zParamName=None, zoscParamName=None):
+                 mParamName=None, kParamName=None, zParamName=None, zoscParamName=None,
+                   mem_name = "membrane", spacing = 0.1):
     s = ""
 
     massVal = ""
@@ -98,7 +99,12 @@ def createMembrane(sizeL, sizeH, name, M, K, Z, hasZosc, Zosc,
     for j in range(0,sizeL):
         for i in range(0,sizeH):
             index = "@" + name + "_m" + str(j) + "_" + str(i)
-            s += index + " mass " + massVal + " 0. 0.\n"
+            if not hasZosc:
+                s += index + " mass " + massVal + " 0. 0. " + mem_name + " " + str(spacing * j) + " " + str(
+                    spacing * i) + "\n"
+            else:
+                s += index + " osc " + massVal + " 0 " + zoscVal +" 0. 0. " + mem_name + " " + str(spacing * j) + " " + str(
+                    spacing * i) + "\n"
             mList.append(index)
     s += "\n"
 

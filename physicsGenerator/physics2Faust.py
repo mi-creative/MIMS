@@ -8,7 +8,6 @@
 
 import pprint
 import numpy as np
-import sys
 
 pp = pprint.PrettyPrinter(indent=4)
 
