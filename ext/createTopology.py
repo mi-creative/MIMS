@@ -15,8 +15,6 @@ class createTopo(QtWidgets.QDialog):
         self.initUI()
 
     def initUI(self):
-        print("stuff")
-
         self.tabWidget = QtWidgets.QTabWidget()
         self.layout  = QtWidgets.QVBoxLayout()
         self.layout.addWidget(self.tabWidget)

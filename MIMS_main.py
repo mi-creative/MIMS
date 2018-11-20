@@ -11,8 +11,6 @@ from physicsGenerator import physics2Faust,physicsGen
 version = "0.1"
 
 
-# bonjour c'est JV
-
 class Main(QtWidgets.QMainWindow):
 
     updateModelStat = pyqtSignal()
@@ -21,12 +19,16 @@ class Main(QtWidgets.QMainWindow):
         QtWidgets.QMainWindow.__init__(self,parent)
         uic.loadUi('ui/mainWindow.ui', self)
 
+        sshFile = "darkstyle.qss"
+        with open(sshFile, "r") as fh:
+            self.setStyleSheet(fh.read())
+
         self.filename = ""
         self.compileTargetName=""
 
         self.changesSaved = True
 
-        self.dict = ["param","mass", "massG","osc","ground",
+        self.dict = ["none","param","mass", "massG","osc","ground",
                      "spring","nlSpring","nlPluck", "nlBow","detent",
                      "posInput","frcInput","posOutput","frcOutput"]
 
@@ -189,7 +191,7 @@ class Main(QtWidgets.QMainWindow):
         self.highlight = highlighter.ModelHighlighter(self.textEdit.document())
 
         self.initToolbar()
-        self.initFormatbar()
+        # self.initFormatbar()
         self.initMenubar()
 
         self.statusbar = self.statusBar()

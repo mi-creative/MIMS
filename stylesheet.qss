@@ -1,0 +1,107 @@
+
+QMainWindow {
+    /*background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0.273, stop:0 #a0a0a0, stop:1 #a8a8a8);*/
+    background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                       stop:0 lightgray, stop:1 darkgray);
+    /*background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0.273, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));*/
+    border-style: outset;
+    border-width: 0px;
+    border-color: black;
+    font: bold 14px;
+    min-width: 10em;
+    padding: 60px;
+}
+
+
+QPushButton#compileButton {
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0.273, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));
+    border-style: outset;
+    border-width: 2px;
+    border-radius: 10px;
+    border-color: beige;
+    font: bold 14px;
+    min-width: 10em;
+    padding: 6px;
+}
+QPushButton#compileButton:pressed {
+    background-color: rgb(224, 0, 0);
+    border-style: inset;
+}
+
+
+ QPushButton#faustButton {
+     border: 2px solid #8f8f91;
+     border-radius: 6px;
+     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                       stop: 0 #f6f7fa, stop: 1 #dadbde);
+     min-width: 80px;
+ }
+
+ QPushButton#faustButton:pressed {
+     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                       stop: 0 #dadbde, stop: 1 #f6f7fa);
+ }
+
+
+ QMenuBar {
+     background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                       stop:0 lightgray, stop:1 darkgray);
+ }
+
+ QMenuBar::item {
+     spacing: 3px; /* spacing between menu bar items */
+     padding: 1px 4px;
+     background: transparent;
+     border-radius: 4px;
+ }
+
+ QMenuBar::item:selected {
+     background: #a8a8a8;
+ }
+
+ QMenuBar::item:pressed {
+     background: #888888;
+ }
+
+
+ QMenu {
+     background-color: #ABABAB; /* sets background of the menu */
+     border: 1px solid black;
+ }
+
+ QMenu::item {
+     /* sets background of menu item. set this to something non-transparent
+         if you want menu color and menu item color to be different */
+     background-color: transparent;
+ }
+
+ QMenu::item:selected { /* when user selects item using mouse or keyboard */
+     background-color: #654321;
+ }
+
+ QToolBar {
+     background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0.273, stop:0 #a0a0a0, stop:1 #a8a8a8);
+     border: 0px solid #765432;
+ }
+
+   QToolButton:pressed {
+     background: #765432;
+     border: 1px solid black;
+     border-radius: 4px;
+     border-style: outset;
+ }
+
+
+  QToolButton:hover {
+     background: #765432;
+     border: 1px solid black;
+     border-radius: 4px;
+     border-style: outset;
+ }
+
+
+ QToolBar::handle {
+     /* image: url(handle.png);*/
+ }
+
+
