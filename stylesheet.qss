@@ -7,7 +7,7 @@ QMainWindow {
     border-style: outset;
     border-width: 0px;
     border-color: black;
-    font: bold 14px;
+    font: bold 14pt;
     min-width: 10em;
     padding: 60px;
 }

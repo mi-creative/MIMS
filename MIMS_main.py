@@ -61,6 +61,11 @@ class Main(QtWidgets.QMainWindow):
         self.saveAsAction.setShortcut("Ctrl+S")
         self.saveAsAction.triggered.connect(self.saveAs)
 
+        self.quitAction = QtWidgets.QAction(QtGui.QIcon("icons/icon.png"),"Quit", self)
+        self.quitAction.setStatusTip("Leave the application.")
+        self.quitAction.setShortcut("Ctrl+Q")
+        self.quitAction.triggered.connect(self.quit)
+
 
         self.compileAction = QtWidgets.QAction(QtGui.QIcon("icons/count.png"),"Compile into Gen", self)
         self.compileAction.setStatusTip("Compile the model file into Gen DSP Code")
@@ -171,6 +176,7 @@ class Main(QtWidgets.QMainWindow):
         file.addAction(self.openAction)
         file.addAction(self.saveAction)
         file.addAction(self.saveAsAction)
+        file.addAction(self.quitAction)
 
         comp.addAction(self.compileAction)
         comp.addAction(self.faustCompileAction)
@@ -241,6 +247,10 @@ class Main(QtWidgets.QMainWindow):
             # PYQT5 Returns a tuple in PyQt5, we only need the filename
             self.filename = QtWidgets.QFileDialog.getSaveFileName(self,
                                                 'Save File')[0]
+
+        if self.filename == "":
+            return
+
         if not self.filename.endswith(".mdl"):
             self.filename += ".mdl"
 
@@ -257,10 +267,18 @@ class Main(QtWidgets.QMainWindow):
         with open(self.filename, "wt") as file:
             file.write(self.textEdit.toPlainText())
 
+    def quit(self):
+        self.close()
+
     def compile(self):
         # PYQT5 Returns a tuple in PyQt5, we only need the filename
         self.compileTargetName = QtWidgets.QFileDialog.getSaveFileName(self,
                                                               'Compile Model')[0]
+
+        if self.compileTargetName == "":
+            self.statusbar.showMessage("The gen~ code was not not generated.")
+            return
+
         if not self.compileTargetName.endswith(".gendsp"):
             self.compileTargetName += ".gendsp"
 
@@ -268,10 +286,16 @@ class Main(QtWidgets.QMainWindow):
         phyGen.parseModel(self.textEdit.toPlainText(),True)
         phyGen.createDspObj(self.compileTargetName)
 
+
     def faustCompile(self):
         # PYQT5 Returns a tuple in PyQt5, we only need the filename
         self.compileTargetName = QtWidgets.QFileDialog.getSaveFileName(self,
                                                               'Compile Model')[0]
+
+        if self.compileTargetName == "":
+            self.statusbar.showMessage("The FAUST code was not not generated.")
+            return
+
         if not self.compileTargetName.endswith(".dsp"):
             self.compileTargetName += ".dsp"
 
@@ -280,6 +304,8 @@ class Main(QtWidgets.QMainWindow):
 
         with open(self.compileTargetName, "wt") as file:
             file.write(s)
+
+        self.statusbar.showMessage("Created the following FAUST file: " + self.compileTargetName)
 
     def comment(self):
         cursor = self.textEdit.textCursor()
@@ -389,6 +415,8 @@ class Main(QtWidgets.QMainWindow):
         if self.changesSaved:
             event.accept()
         else:
+            if (self.textEdit.toPlainText() == ""):
+                return
             popup = QtWidgets.QMessageBox(self)
             popup.setIcon(QtWidgets.QMessageBox.Warning)
             popup.setText("The document has been modified")
@@ -404,6 +432,17 @@ class Main(QtWidgets.QMainWindow):
                 event.accept()
             else:
                 event.ignore()
+
+    # def dragEnterEvent(self, e):
+    #     print(e)
+    #     if e.mimeData().hasText():
+    #         e.accept()
+    #     else:
+    #         e.ignore()
+    #
+    # def dropEvent(self, e):
+    #     self.textEdit.setText(e.mimeData().text())
+
 
 def main():
 
