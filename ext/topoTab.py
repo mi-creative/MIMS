@@ -249,3 +249,54 @@ class SquareMeshGenTab(genericTopoWidget):
                                       zoscName)
 
         self.genScript.emit(genMesh)
+
+
+
+class TriangleMeshGenTab(genericTopoWidget):
+    def __init__(self, parent=None):
+        genericTopoWidget.__init__(self, "TriangleMesh", parent)
+        self.initSpecificUI()
+
+    def initSpecificUI(self):
+        self.name.setText("tri")
+
+        self.specWidget = QtWidgets.QWidget()
+        hLayout = QtWidgets.QHBoxLayout()
+        self.specWidget.setLayout(hLayout)
+
+        self.strLen = QtWidgets.QSpinBox()
+        self.strLen.setMinimum(1)
+        self.strLen.setValue(10)
+
+        hLayout.addWidget(QtWidgets.QLabel("Length:"),0)
+        hLayout.addWidget(self.strLen, 1)
+        self.vLayout.addWidget(self.specWidget)
+
+    def generateStructure(self):
+        mName = None
+        kName = None
+        zName = None
+        zoscName = None
+
+        if self.indexMassParam:
+            mName = self.mIndexName.text()
+        if self.indexStiffnessParam:
+            kName = self.kIndexName.text()
+        if self.indexDampingParam:
+            zName = self.zIndexName.text()
+        if self.indexZoscParam:
+            zoscName = self.zoscIndexName.text()
+
+        genTriangle = physicsGenerator.topologyGenerator.createTriangleMembrane(self.strLen.value(),
+                                      self.name.text(),
+                                      self.mParam.value(),
+                                      self.kParam.value(),
+                                      self.zParam.value(),
+                                      self.hasInternalDamping,
+                                      self.zoscParam.value(),
+                                      mName,
+                                      kName,
+                                      zName,
+                                      zoscName)
+
+        self.genScript.emit(genTriangle)

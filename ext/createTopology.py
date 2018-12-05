@@ -16,17 +16,22 @@ class createTopo(QtWidgets.QDialog):
 
     def initUI(self):
         self.tabWidget = QtWidgets.QTabWidget()
-        self.layout  = QtWidgets.QVBoxLayout()
+        self.layout = QtWidgets.QVBoxLayout()
         self.layout.addWidget(self.tabWidget)
         self.setLayout(self.layout)
 
         self.stringTab = ext.topoTab.StringGenTab()
         self.tabWidget.addTab(self.stringTab, "String")
+
         self.stringTab.genScript.connect(self.onGeneratedStruct)
 
         self.meshTab = ext.topoTab.SquareMeshGenTab()
         self.tabWidget.addTab(self.meshTab, "Square Mesh")
         self.meshTab.genScript.connect(self.onGeneratedStruct)
+
+        self.triTab = ext.topoTab.TriangleMeshGenTab()
+        self.tabWidget.addTab(self.triTab, "Triangle Mesh")
+        self.triTab.genScript.connect(self.onGeneratedStruct)
 
     def onGeneratedStruct(self, genString):
         # Grab the text cursor
