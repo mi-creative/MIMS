@@ -10,105 +10,6 @@ import pprint
 import numpy as np
 
 
-FAUST_LIB_HEADER: str = """ 
-import("stdfaust.lib");
-
-Fe = ma.SR;
-
-impulsify = _ <: _,mem : - <: >(0)*_;
-
-// integrated oscillator (mass-spring-ground system)
-// m, k, z: mass, stiffness, damping (algorithmic values)
-// x0, x1: initial position and delayed position
-osc(m,k,z,x0,x1) = equation
-with{
-  A = 2-(k+z)/m;
-  B = z/m-1;
-  C = 1/m;
-  equation = x 
-	letrec{
-  		'x = A*(x + (x0 : impulsify)) + B*(x' + (x1 : impulsify)) + C*_;
-	};
-};
-
-// punctual mass module
-// m: mass (algorithmic value)
-// x0, x1: initial position and delayed position
-mass(m,x0,x1) = equation
-with{
-  A = 2;
-  B = -1;
-  C = 1/m;
-  equation = x 
-	letrec{
-  		'x = A*(x + (x0 : impulsify)) + B*(x' + (x1 : impulsify) + (x0 : impulsify)') + C*_;
-	};
-};
-
-// punctual ground module
-// x0: initial position
-ground(x0) = equation
-with{
-  // could this term be removed or simlified? Need "unused" input force signal for routing scheme
-  C = 0;
-  equation = x 
-	letrec{
-		'x = x + (x0 : impulsify) + C*_;
-	};
-};
-
-// spring
-// k,z: stiffness and daming (algorithmic values)
-spring(k,z,x1,x2) = k*(x2-x1) + z*((x2-x2')-(x1-x1')) <: _,_*(-1);
-
-// nlPluck
-// 1D non-linear picking Interaction algorithm
-nlPluck(k,scale,x1,x2) = 
-  select2(
-    absdeltapos>scale,
-    select2(
-      absdeltapos>scale*0.5,
-      k*deltapos,
-      k*(ma.signum(deltapos)*scale*0.5-deltapos)),
-    0) <: _,*(-1)
-with{
-  deltapos = x1 - x2;
-  absdeltapos = abs(deltapos);
-};
-
-// nlBow
-// 1D non-linear bowing Interaction algorithm 
-nlBow(z,scale,x1,x2) = 
-  select2(
-    absspeed < (scale/3),
-    select2(
-      absspeed<scale,
-      0,
-      select2(
-        speed>0,
-        (scale/3)*z + (-z/4)*speed,
-        (-scale/3)*z + (-z/4)*speed
-        )
-      ),
-    z*speed) <: _,*(-1)
-with{
-  speed = (x1-x1r) - (x2-x2r);
-  absspeed = abs(speed);
-};
-
-// collision
-// k,z: stiffness and daming (algorithmic values)
-// thres: position threshold for the collision to be active
-collision(k,z,thres,x1,x2) = spring(k,z,x1,x2) : (select2(comp,0,_),select2(comp,0,_))
-with{
-  comp = (x2-x1)<thres;
-};
-
-posInput(init) = _,_ : !,_ :+(init : impulsify);
- 
-"""
-
-
 pp = pprint.PrettyPrinter(indent=4)
 
 
@@ -149,15 +50,10 @@ class Physics2Faust():
         dim = (1,1)
         self.routingMatrix = np.zeros(dim)
 
-        # Param and Init Val lists: do we need this, depending on code gen?
-        # self.massValues = []
-        # self.massPos = []
-        # self.massPosR = []
-        # self.stiffvalues = []
-        # self.dampValues = []
 
         # labels of the output masses (positions are routed to output)
         self.outputMasses = []
+        self.outputs = 0
 
 
         # Error state
@@ -165,8 +61,27 @@ class Physics2Faust():
 
         self.destFolder = ""
         self.generatedCode =""
+
+        self.inNames = []
         self.inputs = 0
-        self.outputs = 0
+
+        self.frcInputs = []
+
+
+    def getPosFromMatId(self, matId, delayed = False):
+        offset = 0
+        if delayed:
+            offset = 1
+        for mat in self.matModuleDict["mass"]:
+            if mat[0] == matId:
+                return mat[2 + offset]
+        for mat in self.matModuleDict["osc"]:
+            if mat[0] == matId:
+                return mat[4 + offset]
+        for mat in (self.matModuleDict["ground"] or self.matModuleDict["posInput"]):
+            if mat[0] == matId:
+                return mat[1]
+        return 0
 
 
     ########################################################
@@ -237,11 +152,20 @@ class Physics2Faust():
                     if l[1] == "posOutput":
                         if (len(l) == 3):
                             self.outputMasses.append(l[2])
+                            self.outputs += 1
                         else:
                             break
                     if l[1] == "posInput":
                         if (len(l) == 3):
                             self.matModuleDict["posInput"].append([l[0], l[2]])
+                            self.inputs += 1
+                            self.inNames.append(l[0][1:])
+                        else:
+                            break
+
+                    if l[1] == "frcInput":
+                        if (len(l) == 3):
+                            self.frcInputs.append([l[0][1:], l[2]])
                         else:
                             break
 
@@ -336,17 +260,23 @@ class Physics2Faust():
         linkString = ""
         index = 0
         for linkL in self.linkModuleDict["spring"]:
-            linkString += "spring(" + linkL[3] + "," + linkL[4]  + ")"
+            linkString += "spring(" + linkL[3] + "," + linkL[4]  \
+                          + ", " + str(self.getPosFromMatId(linkL[1],True)) \
+                          + ", " + str(self.getPosFromMatId(linkL[2],True)) + ")"
             index += 1
             if index < nbLinks:
                 linkString += ',\n'
         for linkL in self.linkModuleDict["collision"]:
-            linkString += "collision(" + linkL[3] + "," + linkL[4] + "," + linkL[5]  + ")"
+            linkString += "new_collision(" + linkL[3] + "," + linkL[4] + "," + linkL[5]  \
+                          + ", " + str(self.getPosFromMatId(linkL[1],True)) \
+                          + ", " + str(self.getPosFromMatId(linkL[2],True)) + ")"
             index += 1
             if index < nbLinks:
                 linkString += ',\n'
         for linkL in self.linkModuleDict["nlBow"]:
-            linkString += "nlBow(" + linkL[3] + "," + linkL[4]  + ")"
+            linkString += "nlBow(" + linkL[3] + "," + linkL[4]  \
+                          + ", " + str(self.getPosFromMatId(linkL[1],True)) \
+                          + ", " + str(self.getPosFromMatId(linkL[2],True)) + ")"
             index += 1
             if index < nbLinks:
                 linkString += ',\n'
@@ -360,20 +290,31 @@ class Physics2Faust():
             print(linkString)
 
         s =''
-        s += FAUST_LIB_HEADER
+        s += """import("stdfaust.lib");\nimport("mi.lib");\n\n"""
+
+        # Temporary new collision algorithm
+        s += """new_collision(k,z,thres,x1r0,x2r0,x1,x2) = spring(k,z,x1r0,x2r0,x1,x2) : 
+                (select2(comp,0,_),select2(comp,0,_))
+                with{
+                comp = (x2-x1)<thres;
+                };\n\n"""
 
         paramString =""
         for param in self.indexedParams:
             paramString += param[0] + " = " + param[1] + ";\n"
         paramString += "\n"
 
-        extraSignalString =""
-        for i in range (0, len(self.matModuleDict["posInput"])):
-            extraSignalString += ", _"
+        for input in self.inNames:
+            s += input + " = 0; \t//write a specific input signal operation here\n"
+        s += "\n\n"
+
+
+        s += "OutGain = 0.5;"
+        s += "\n\n"
 
         s += paramString
-        s += "model = (RoutingLinkToMass" + extraSignalString + ": \n" + matString + " :\nRoutingMassToLink : \n" + linkString + ", \
-        par(i, " + str(nbOut) + ",_))~par(i, " + str(2 * nbLinks) + ", _): \
+        s += "model = (RoutingLinkToMass: \n" + matString + " :\nRoutingMassToLink : \n" + linkString + ", \
+        par(i, " + str(nbOut) + ",_)\n)~par(i, " + str(2 * nbLinks) + ", _): \
         par(i, " + str(2 * nbLinks) + ",!), par(i,  " + str(nbOut) + ", _)\n"
 
         s += "with{\n"
@@ -386,25 +327,40 @@ class Physics2Faust():
         s += "l" + str(nbLinks-1) + "_f1,"
         s += "l" + str(nbLinks-1) + "_f2) = "
 
+        inCpt = 0
+
+
         for i in range(0, nbMats):
+            routed_forces = ""
             add = 0
             for j in range(0, 2 * nbLinks):
                 if(self.matRoutingMatrix[i][j]) == 1:
                     if add:
-                        s += "+"
-                    s += "l" + str(j//2) + "_f" + str((j%2)+1)
+                        routed_forces += "+"
+                    routed_forces += "l" + str(j//2) + "_f" + str((j%2)+1)
                     add = 1
+            if (routed_forces) == "":
+                s += "0" #9""!"
+            else:
+                s += routed_forces
+            if i >= nbMats - len(self.matModuleDict["posInput"]):
+                s += ", " + self.inNames[inCpt]
+                inCpt += 1
             if i < nbMats-1:
                 s += ", "
             else:
                 s += ";"
+
+        # If the last Mat was not connected to anything...
+        if s.endswith(", ;"):
+            s = s.replace(", ;", ";")
 
         # Generate Mat to Link Routing Function
         s += '\n'
         s += "RoutingMassToLink("
         for i in range (0,nbMats-1):
             s+= "m"+str(i)+","
-        s += "m" + str(nbLinks) + ") = "
+        s += "m" + str(nbMats-1) + ") = "
 
         for i in range(0, 2 * nbLinks):
             for j in range(0, nbMats):
@@ -421,8 +377,20 @@ class Physics2Faust():
             else:
                 s += "m"+str(self.matModuleMap[mass]) + ";"
 
-        s += '\n'
-        s += "};\nprocess = model: *(0.5), *(0.5);"
+        s += '\n};\n'
+
+        s += "process = model"
+
+        if not self.outputs:
+            s += ";"
+        else :
+            audioOutChannels=""
+            for i in range (0, self.outputs):
+                audioOutChannels += "*(OutGain)"
+                if i < (self.outputs -1):
+                    audioOutChannels += ", "
+
+            s += ": " + audioOutChannels + ";"
 
         if debug_mode:
             print(s)
