@@ -325,7 +325,17 @@ class Physics2Faust():
             s+= "l"+str(i)+"_f1,"
             s+= "l"+str(i)+"_f2,"
         s += "l" + str(nbLinks-1) + "_f1,"
-        s += "l" + str(nbLinks-1) + "_f2) = "
+        # add any potential inputs to the end of the list
+        if not len(self.matModuleDict["posInput"]):
+            s += "l" + str(nbLinks-1) + "_f2) = "
+        else:
+            s += "l" + str(nbLinks - 1) + "_f2, "
+            for i in range (0, len(self.inNames)):
+                s += "p_" + self.inNames[i]
+                if i == (len(self.inNames)-1):
+                    s += ") = "
+                else:
+                    s += ", "
 
         inCpt = 0
 
@@ -344,7 +354,7 @@ class Physics2Faust():
             else:
                 s += routed_forces
             if i >= nbMats - len(self.matModuleDict["posInput"]):
-                s += ", " + self.inNames[inCpt]
+                s += ", " + "p_" + self.inNames[inCpt]
                 inCpt += 1
             if i < nbMats-1:
                 s += ", "
@@ -379,7 +389,17 @@ class Physics2Faust():
 
         s += '\n};\n'
 
-        s += "process = model"
+        s += "process = "
+
+        for i in range(0, len(self.inNames)):
+            s += self.inNames[i]
+            if i == (len(self.inNames) - 1):
+                s += ": "
+            else:
+                s += ", "
+
+
+        s += " model"
 
         if not self.outputs:
             s += ";"

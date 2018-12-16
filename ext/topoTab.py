@@ -160,6 +160,7 @@ class StringGenTab(genericTopoWidget):
 
         self.strLen = QtWidgets.QSpinBox()
         self.strLen.setMinimum(1)
+        self.strLen.setMaximum(1000)
         self.strLen.setValue(10)
 
         hLayout.addWidget(QtWidgets.QLabel("Length:"),0)
