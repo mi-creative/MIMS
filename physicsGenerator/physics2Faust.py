@@ -36,10 +36,8 @@ class Physics2Faust():
 
         # Dictionary with name and index of all Mat modules
         self.matModuleMap = {}
-
         # Indexed parameters
         self.indexedParams = []
-
         # Dictionary of all interaction physical modules
         self.linkModuleDict = {"spring" : [],
                                "collision" : [],
@@ -50,11 +48,9 @@ class Physics2Faust():
         dim = (1,1)
         self.routingMatrix = np.zeros(dim)
 
-
         # labels of the output masses (positions are routed to output)
         self.outputMasses = []
         self.outputs = 0
-
 
         # Error state
         self.error = 0
@@ -172,6 +168,7 @@ class Physics2Faust():
         pp.pprint(self.matModuleDict)
         pp.pprint(self.linkModuleDict)
 
+        # Build the map between module identifiers and index in the Mat table
         index = 0
         for mat in self.matModuleDict["ground"]:
             self.matModuleMap[mat[0]] = index
@@ -186,6 +183,12 @@ class Physics2Faust():
             self.matModuleMap[mat[0]] = index
             index+=1
 
+        # If any force inputs, find the index of the concerned Mats
+        # in this method, the module name in the frcInputs is switched to the index
+        for frcList in self.frcInputs:
+            for name, index in self.matModuleMap.items():
+                if name == frcList[1]:
+                    frcList[1] = index
 
         matDim = len(self.matModuleDict["ground"])\
                  + len(self.matModuleDict["mass"])\
@@ -305,7 +308,11 @@ class Physics2Faust():
         paramString += "\n"
 
         for input in self.inNames:
-            s += input + " = 0; \t//write a specific input signal operation here\n"
+            s += input + " = 0; \t//write a specific position input signal operation here\n"
+        s += "\n\n"
+
+        for frc in self.frcInputs:
+            s += frc[0] + " = 0; \t//write a specific force input signal operation here\n"
         s += "\n\n"
 
 
@@ -325,17 +332,15 @@ class Physics2Faust():
             s+= "l"+str(i)+"_f1,"
             s+= "l"+str(i)+"_f2,"
         s += "l" + str(nbLinks-1) + "_f1,"
-        # add any potential inputs to the end of the list
-        if not len(self.matModuleDict["posInput"]):
-            s += "l" + str(nbLinks-1) + "_f2) = "
-        else:
-            s += "l" + str(nbLinks - 1) + "_f2, "
-            for i in range (0, len(self.inNames)):
-                s += "p_" + self.inNames[i]
-                if i == (len(self.inNames)-1):
-                    s += ") = "
-                else:
-                    s += ", "
+        s += "l" + str(nbLinks - 1) + "_f2"
+
+        for i in range (0, len(self.inNames)):
+            s += ", p_" + self.inNames[i]
+
+        for i in range (0, len(self.frcInputs)):
+            s += ", f_" + self.frcInputs[i][0]
+
+        s += ") = "
 
         inCpt = 0
 
@@ -343,6 +348,14 @@ class Physics2Faust():
         for i in range(0, nbMats):
             routed_forces = ""
             add = 0
+            # check if there is a force input for this module
+            for frc in self.frcInputs:
+                if frc[1] == i:
+                    if add:
+                        routed_forces += "+"
+                    routed_forces += "f_" + frc[0]
+                    add = 1
+            # check for active links to route
             for j in range(0, 2 * nbLinks):
                 if(self.matRoutingMatrix[i][j]) == 1:
                     if add:
@@ -391,15 +404,24 @@ class Physics2Faust():
 
         s += "process = "
 
+        first = True
         for i in range(0, len(self.inNames)):
-            s += self.inNames[i]
-            if i == (len(self.inNames) - 1):
-                s += ": "
+            if first:
+                s += self.inNames[i]
+                first = False
             else:
-                s += ", "
+                s += ", " + self.inNames[i]
+
+        for i in range(0, len(self.frcInputs)):
+            if first:
+                s += self.frcInputs[i][0]
+                first = False
+            else:
+                s += ", " + self.frcInputs[i][0]
 
 
-        s += " model"
+
+        s += ": model"
 
         if not self.outputs:
             s += ";"
