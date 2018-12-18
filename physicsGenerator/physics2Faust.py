@@ -277,7 +277,7 @@ class Physics2Faust():
             if index < nbLinks:
                 linkString += ',\n'
         for linkL in self.linkModuleDict["nlBow"]:
-            linkString += "nlBow(" + linkL[3] + "," + linkL[4]  \
+            linkString += "new_nlBow(" + linkL[3] + "," + linkL[4]  \
                           + ", " + str(self.getPosFromMatId(linkL[1],True)) \
                           + ", " + str(self.getPosFromMatId(linkL[2],True)) + ")"
             index += 1
@@ -300,7 +300,23 @@ class Physics2Faust():
                 (select2(comp,0,_),select2(comp,0,_))
                 with{
                 comp = (x2-x1)<thres;
-                };\n\n"""
+                };\n\n
+                
+                                // nlBow
+                // 1D non-linear bowing Interaction algorithm
+                new_nlBow(z,scale,x1r0, x2r0,x1,x2) = 
+                  select2(
+                    absspeed>scale,
+                    select2(
+                      absspeed>(scale*0.333),
+                      z*speed,
+                      z*(ma.signum(speed)*scale*0.333) - z*0.25*speed),
+                    0) <:  *(-1),_
+                with{
+                  speed = ((x1 - x1') - (x2 - x2'));
+                  absspeed = abs(speed);
+                };\n\n
+                """
 
         paramString =""
         for param in self.indexedParams:
@@ -419,9 +435,10 @@ class Physics2Faust():
             else:
                 s += ", " + self.frcInputs[i][0]
 
+        if not first:
+            s += ":"
 
-
-        s += ": model"
+        s += " model"
 
         if not self.outputs:
             s += ";"
