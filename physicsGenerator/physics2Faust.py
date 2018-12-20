@@ -6,6 +6,7 @@
 #         code for use inside gen, then save it to an output file     #
 ######################################################
 
+import sys
 import pprint
 import numpy as np
 
@@ -270,14 +271,14 @@ class Physics2Faust():
             if index < nbLinks:
                 linkString += ',\n'
         for linkL in self.linkModuleDict["collision"]:
-            linkString += "new_collision(" + linkL[3] + "," + linkL[4] + "," + linkL[5]  \
+            linkString += "collision(" + linkL[3] + "," + linkL[4] + "," + linkL[5]  \
                           + ", " + str(self.getPosFromMatId(linkL[1],True)) \
                           + ", " + str(self.getPosFromMatId(linkL[2],True)) + ")"
             index += 1
             if index < nbLinks:
                 linkString += ',\n'
         for linkL in self.linkModuleDict["nlBow"]:
-            linkString += "new_nlBow(" + linkL[3] + "," + linkL[4]  \
+            linkString += "nlBow(" + linkL[3] + "," + linkL[4]  \
                           + ", " + str(self.getPosFromMatId(linkL[1],True)) \
                           + ", " + str(self.getPosFromMatId(linkL[2],True)) + ")"
             index += 1
@@ -295,28 +296,6 @@ class Physics2Faust():
         s =''
         s += """import("stdfaust.lib");\nimport("mi.lib");\n\n"""
 
-        # Temporary new collision algorithm
-        s += """new_collision(k,z,thres,x1r0,x2r0,x1,x2) = spring(k,z,x1r0,x2r0,x1,x2) : 
-                (select2(comp,0,_),select2(comp,0,_))
-                with{
-                comp = (x2-x1)<thres;
-                };\n\n
-                
-                                // nlBow
-                // 1D non-linear bowing Interaction algorithm
-                new_nlBow(z,scale,x1r0, x2r0,x1,x2) = 
-                  select2(
-                    absspeed>scale,
-                    select2(
-                      absspeed>(scale*0.333),
-                      z*speed,
-                      z*(ma.signum(speed)*scale*0.333) - z*0.25*speed),
-                    0) <:  *(-1),_
-                with{
-                  speed = ((x1 - x1') - (x2 - x2'));
-                  absspeed = abs(speed);
-                };\n\n
-                """
 
         paramString =""
         for param in self.indexedParams:
@@ -454,3 +433,25 @@ class Physics2Faust():
         if debug_mode:
             print(s)
         return s
+
+
+
+if __name__ == "__main__":
+
+    if len(sys.argv) < 3:
+        print("Not enough arguments, use: python physics2Faust [mdl file] [dsp file]")
+    else:
+        mdl_file = sys.argv[1]
+        dsp_file = sys.argv[2]
+
+        mdlcode = ""
+        dspcode = ""
+
+        with open(mdl_file, "rt") as file:
+            phyGen = Physics2Faust()
+            mdlcode = file.read()
+            dspcode = phyGen.parseModel(mdlcode)
+
+        with open(dsp_file, "wt") as file:
+            file.write(dspcode)
+        print("Created the following FAUST file: " + dsp_file)
