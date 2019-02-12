@@ -19,7 +19,7 @@ def generateHeader():
 			"modernui" : 1
 		}
 ,
-		"rect" : [ 67.0, 109.0, 600.0, 450.0 ],
+		"rect" : [ 67.0, 109.0, 700.0, 500.0 ],
 		"editing_bgcolor" : [ 0.9, 0.9, 0.9, 1.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
@@ -75,7 +75,7 @@ def generateCodeBox(codeStr, box_Id, nb_In, nb_Out, xPos, yPos):
 					"numinlets" : """ + str(nb_In) + """,
 					"numoutlets" : """ + str(nb_Out) + """,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ """ + str(yPos) + """, """ + str(xPos) + """, 250.0, 200.0 ],
+					"patching_rect" : [ """ + str(yPos) + """, """ + str(xPos) + """, 450.0, 300.0 ],
 					"style" : ""
 				} }"""
     return boxText
@@ -114,9 +114,9 @@ def generateDspObj(name, codeboxCode, nbIn, nbOut):
 
     ## Output objects
     for x in range(1, nbOut):
-        outFile.write(generateNewObjBox("outbox_" + str(x), 1, 0, "out " + str(x), 320., 20. + x * 50.))
+        outFile.write(generateNewObjBox("outbox_" + str(x), 1, 0, "out " + str(x), 420., 20. + x * 50.))
         outFile.write(', ')
-    outFile.write(generateNewObjBox("outbox_" + str(nbOut), 1, 0, "out " + str(nbOut), 320., 20. + nbOut * 50.))
+    outFile.write(generateNewObjBox("outbox_" + str(nbOut), 1, 0, "out " + str(nbOut), 420., 20. + nbOut * 50.))
     outFile.write('],\n "lines" : [  ')
 
     ##  Connections

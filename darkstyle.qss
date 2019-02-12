@@ -263,9 +263,9 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical
 
 QTextEdit
 {
-    background-color: #efefdf;
-    color: #0f0f0f;
-    font-size: 13px;
+    background-color: #FAFAFA;
+    color: #2f2f2f;
+    font-size: 15px;
 
 }
 

@@ -28,8 +28,8 @@ class Main(QtWidgets.QMainWindow):
 
         self.changesSaved = True
 
-        self.dict = ["none","param","mass", "massG","osc","ground",
-                     "spring","nlSpring","nlPluck", "nlBow","detent",
+        self.dict = ["none","param","mass", "massG","osc","ground", "springDamper", "damper",
+                     "spring", "nlSpring", "nlSpring2", "nlSpring3","nlPluck", "nlBow","contact",
                      "posInput","frcInput","posOutput","frcOutput"]
 
         # Set the initial count for module types
@@ -203,7 +203,7 @@ class Main(QtWidgets.QMainWindow):
         self.statusbar = self.statusBar()
 
         # x and y coordinates on the screen, width, height
-        self.setGeometry(100,100,900,600)
+        self.setGeometry(100,100,1000,700)
 
         self.setWindowTitle("Mass Interaction Model Scripter - MIMS v" + version)
 
