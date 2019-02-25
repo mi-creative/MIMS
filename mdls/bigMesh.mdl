@@ -1185,7 +1185,7 @@
 @nlp0 nlPluck @in1 @mesh_m14_16 nlK nlscale  
 
 
-@det12 detent @in2 @mesh_m11_2 .0 0.015 0.
-@det13 detent @in2 @mesh_m11_3 0.0 0.015 0.
+@det12 contact @in2 @mesh_m11_2 .0 0.015 0.
+@det13 contact @in2 @mesh_m11_3 0.0 0.015 0.
 
 

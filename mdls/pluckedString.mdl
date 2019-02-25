@@ -322,11 +322,11 @@
 @nlp0 nlPluck @in1 @low_m140 nlK nlscale  
 
 
-@det12 detent @in2 @low_m49 0.0 0.015 0.
-@det13 detent @in2 @low_m50 0.0 0.015 0.
+@det12 contact @in2 @low_m49 0.0 0.015 0.
+@det13 contact @in2 @low_m50 0.0 0.015 0.
 
-@det14 detent @in3 @low_m74 0.0 0.015 0.
-@det15 detent @in3 @low_m75 0.0 0.015 0.
+@det14 contact @in3 @low_m74 0.0 0.015 0.
+@det15 contact @in3 @low_m75 0.0 0.015 0.
 
-@det16 detent @in4 @low_m36 0.0 0.015 0.
-@det17 detent @in4 @low_m37 0.0 0.015 0.
+@det16 contact @in4 @low_m36 0.0 0.015 0.
+@det17 contact @in4 @low_m37 0.0 0.015 0.

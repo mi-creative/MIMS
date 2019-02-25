@@ -1,149 +1,144 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
-<html><head><meta name="qrichtext" content="1" /><style type="text/css">
-p, li { white-space: pre-wrap; }
-</style></head><body style=" font-family:'SansSerif'; font-size:10pt; font-weight:400; font-style:normal;">
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_M param 1.0</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_K param 0.1</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_Z param 0.01</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_Zosc param 0.0</span></p>
-<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0; font-family:'MS Shell Dlg 2'; font-size:8.25pt;"><br /></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_detK param 0.</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_detZ param 0.</span></p>
-<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0; font-family:'MS Shell Dlg 2'; font-size:8.25pt;"><br /></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@in1 posInput 0.</span></p>
-<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0; font-family:'MS Shell Dlg 2'; font-size:8.25pt;"><br /></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_m0 osc str_M 0 str_Zosc 0. 0.</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_m1 osc str_M 0 str_Zosc 0. 0.</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_m2 osc str_M 0 str_Zosc 0. 0.</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_m3 osc str_M 0 str_Zosc 0. 0.</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_m4 osc str_M 0 str_Zosc 0. 0.</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_m5 osc str_M 0 str_Zosc 0. 0.</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_m6 osc str_M 0 str_Zosc 0. 0.</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_m7 osc str_M 0 str_Zosc 0. 0.</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_m8 osc str_M 0 str_Zosc 0. 0.</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_m9 osc str_M 0 str_Zosc 0. 0.</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_m10 osc str_M 0 str_Zosc 0. 0.</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_m11 osc str_M 0 str_Zosc 0. 0.</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_m12 osc str_M 0 str_Zosc 0. 0.</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_m13 osc str_M 0 str_Zosc 0. 0.</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_m14 osc str_M 0 str_Zosc 0. 0.</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_m15 osc str_M 0 str_Zosc 0. 0.</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_m16 osc str_M 0 str_Zosc 0. 0.</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_m17 osc str_M 0 str_Zosc 0. 0.</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_m18 osc str_M 0 str_Zosc 0. 0.</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_m19 osc str_M 0 str_Zosc 0. 0.</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_m20 osc str_M 0 str_Zosc 0. 0.</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_m21 osc str_M 0 str_Zosc 0. 0.</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_m22 osc str_M 0 str_Zosc 0. 0.</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_m23 osc str_M 0 str_Zosc 0. 0.</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_m24 osc str_M 0 str_Zosc 0. 0.</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_m25 osc str_M 0 str_Zosc 0. 0.</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_m26 osc str_M 0 str_Zosc 0. 0.</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_m27 osc str_M 0 str_Zosc 0. 0.</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_m28 osc str_M 0 str_Zosc 0. 0.</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_m29 osc str_M 0 str_Zosc 0. 0.</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_m30 osc str_M 0 str_Zosc 0. 0.</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_m31 osc str_M 0 str_Zosc 0. 0.</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_m32 osc str_M 0 str_Zosc 0. 0.</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_m33 osc str_M 0 str_Zosc 0. 0.</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_m34 osc str_M 0 str_Zosc 0. 0.</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_m35 osc str_M 0 str_Zosc 0. 0.</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_m36 osc str_M 0 str_Zosc 0. 0.</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_m37 osc str_M 0 str_Zosc 0. 0.</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_m38 osc str_M 0 str_Zosc 0. 0.</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_m39 osc str_M 0 str_Zosc 0. 0.</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_m40 osc str_M 0 str_Zosc 0. 0.</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_m41 osc str_M 0 str_Zosc 0. 0.</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_m42 osc str_M 0 str_Zosc 0. 0.</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_m43 osc str_M 0 str_Zosc 0. 0.</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_m44 osc str_M 0 str_Zosc 0. 0.</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_m45 osc str_M 0 str_Zosc 0. 0.</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_m46 osc str_M 0 str_Zosc 0. 0.</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_m47 osc str_M 0 str_Zosc 0. 0.</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_m48 osc str_M 0 str_Zosc 0. 0.</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_m49 osc str_M 0 str_Zosc 0. 0.</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_m50 osc str_M 0 str_Zosc 0. 0.</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_m51 osc str_M 0 str_Zosc 0. 0.</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_m52 osc str_M 0 str_Zosc 0. 0.</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_m53 osc str_M 0 str_Zosc 0. 0.</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_m54 osc str_M 0 str_Zosc 0. 0.</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_m55 osc str_M 0 str_Zosc 0. 0.</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_m56 osc str_M 0 str_Zosc 0. 0.</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_m57 osc str_M 0 str_Zosc 0. 0.</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_m58 osc str_M 0 str_Zosc 0. 0.</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_m59 osc str_M 0 str_Zosc 0. 0.</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_s1 ground 0.</span></p>
-<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0; font-family:'MS Shell Dlg 2'; font-size:8.25pt;"><br /></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_r0 spring @in1 @str_m0 str_K str_Z</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_r1 spring @str_m0 @str_m1 str_K str_Z</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_r2 spring @str_m1 @str_m2 str_K str_Z</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_r3 spring @str_m2 @str_m3 str_K str_Z</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_r4 spring @str_m3 @str_m4 str_K str_Z</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_r5 spring @str_m4 @str_m5 str_K str_Z</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_r6 spring @str_m5 @str_m6 str_K str_Z</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_r7 spring @str_m6 @str_m7 str_K str_Z</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_r8 spring @str_m7 @str_m8 str_K str_Z</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_r9 spring @str_m8 @str_m9 str_K str_Z</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_r10 spring @str_m9 @str_m10 str_K str_Z</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_r11 spring @str_m10 @str_m11 str_K str_Z</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_r12 spring @str_m11 @str_m12 str_K str_Z</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_r13 spring @str_m12 @str_m13 str_K str_Z</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_r14 spring @str_m13 @str_m14 str_K str_Z</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_r15 spring @str_m14 @str_m15 str_K str_Z</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_r16 spring @str_m15 @str_m16 str_K str_Z</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_r17 spring @str_m16 @str_m17 str_K str_Z</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_r18 spring @str_m17 @str_m18 str_K str_Z</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_r19 spring @str_m18 @str_m19 str_K str_Z</span></p>
-<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0; font-family:'MS Shell Dlg 2'; font-size:8.25pt;"><br /></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_r20 spring @str_m19 @str_m20 str_K str_Z</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@det_1 detent @str_m19 @str_m20 det_K det_Z 0.</span></p>
-<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0; font-family:'MS Shell Dlg 2'; font-size:8.25pt;"><br /></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_r21 spring @str_m20 @str_m21 str_K str_Z</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_r22 spring @str_m21 @str_m22 str_K str_Z</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_r23 spring @str_m22 @str_m23 str_K str_Z</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_r24 spring @str_m23 @str_m24 str_K str_Z</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_r25 spring @str_m24 @str_m25 str_K str_Z</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_r26 spring @str_m25 @str_m26 str_K str_Z</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_r27 spring @str_m26 @str_m27 str_K str_Z</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_r28 spring @str_m27 @str_m28 str_K str_Z</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_r29 spring @str_m28 @str_m29 str_K str_Z</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_r30 spring @str_m29 @str_m30 str_K str_Z</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_r31 spring @str_m30 @str_m31 str_K str_Z</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_r32 spring @str_m31 @str_m32 str_K str_Z</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_r33 spring @str_m32 @str_m33 str_K str_Z</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_r34 spring @str_m33 @str_m34 str_K str_Z</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_r35 spring @str_m34 @str_m35 str_K str_Z</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_r36 spring @str_m35 @str_m36 str_K str_Z</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_r37 spring @str_m36 @str_m37 str_K str_Z</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_r38 spring @str_m37 @str_m38 str_K str_Z</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_r39 spring @str_m38 @str_m39 str_K str_Z</span></p>
-<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0; font-family:'MS Shell Dlg 2'; font-size:8.25pt;"><br /></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_r40 spring @str_m39 @str_m40 str_K str_Z</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@det_2 detent @str_m39 @str_m40 det_K det_Z 0.</span></p>
-<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0; font-family:'MS Shell Dlg 2'; font-size:8.25pt;"><br /></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_r41 spring @str_m40 @str_m41 str_K str_Z</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_r42 spring @str_m41 @str_m42 str_K str_Z</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_r43 spring @str_m42 @str_m43 str_K str_Z</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_r44 spring @str_m43 @str_m44 str_K str_Z</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_r45 spring @str_m44 @str_m45 str_K str_Z</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_r46 spring @str_m45 @str_m46 str_K str_Z</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_r47 spring @str_m46 @str_m47 str_K str_Z</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_r48 spring @str_m47 @str_m48 str_K str_Z</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_r49 spring @str_m48 @str_m49 str_K str_Z</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_r50 spring @str_m49 @str_m50 str_K str_Z</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_r51 spring @str_m50 @str_m51 str_K str_Z</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_r52 spring @str_m51 @str_m52 str_K str_Z</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_r53 spring @str_m52 @str_m53 str_K str_Z</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_r54 spring @str_m53 @str_m54 str_K str_Z</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_r55 spring @str_m54 @str_m55 str_K str_Z</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_r56 spring @str_m55 @str_m56 str_K str_Z</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_r57 spring @str_m56 @str_m57 str_K str_Z</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_r58 spring @str_m57 @str_m58 str_K str_Z</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_r59 spring @str_m58 @str_m59 str_K str_Z</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@str_r60 spring @str_m59 @str_s1 str_K str_Z</span></p>
-<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0; font-family:'MS Shell Dlg 2'; font-size:8.25pt;"><br /></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@out1 posOutput @str_m15 </span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@out2 posOutput @str_m35</span></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><span style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt;">@out3 posOutput @str_m55 </span></p>
-<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0; font-family:'MS Shell Dlg 2'; font-size:8.25pt;"><br /></p>
-<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0; font-family:'MS Shell Dlg 2'; font-size:8.25pt;"><br /></p></body></html>
+@str_M param 1.0
+@str_K param 0.1
+@str_Z param 0.01
+@str_Zosc param 0.0
+
+@str_detK param 0.
+@str_detZ param 0.
+
+@in1 posInput 0.
+
+@str_m0 osc str_M 0 str_Zosc 0. 0.
+@str_m1 osc str_M 0 str_Zosc 0. 0.
+@str_m2 osc str_M 0 str_Zosc 0. 0.
+@str_m3 osc str_M 0 str_Zosc 0. 0.
+@str_m4 osc str_M 0 str_Zosc 0. 0.
+@str_m5 osc str_M 0 str_Zosc 0. 0.
+@str_m6 osc str_M 0 str_Zosc 0. 0.
+@str_m7 osc str_M 0 str_Zosc 0. 0.
+@str_m8 osc str_M 0 str_Zosc 0. 0.
+@str_m9 osc str_M 0 str_Zosc 0. 0.
+@str_m10 osc str_M 0 str_Zosc 0. 0.
+@str_m11 osc str_M 0 str_Zosc 0. 0.
+@str_m12 osc str_M 0 str_Zosc 0. 0.
+@str_m13 osc str_M 0 str_Zosc 0. 0.
+@str_m14 osc str_M 0 str_Zosc 0. 0.
+@str_m15 osc str_M 0 str_Zosc 0. 0.
+@str_m16 osc str_M 0 str_Zosc 0. 0.
+@str_m17 osc str_M 0 str_Zosc 0. 0.
+@str_m18 osc str_M 0 str_Zosc 0. 0.
+@str_m19 osc str_M 0 str_Zosc 0. 0.
+@str_m20 osc str_M 0 str_Zosc 0. 0.
+@str_m21 osc str_M 0 str_Zosc 0. 0.
+@str_m22 osc str_M 0 str_Zosc 0. 0.
+@str_m23 osc str_M 0 str_Zosc 0. 0.
+@str_m24 osc str_M 0 str_Zosc 0. 0.
+@str_m25 osc str_M 0 str_Zosc 0. 0.
+@str_m26 osc str_M 0 str_Zosc 0. 0.
+@str_m27 osc str_M 0 str_Zosc 0. 0.
+@str_m28 osc str_M 0 str_Zosc 0. 0.
+@str_m29 osc str_M 0 str_Zosc 0. 0.
+@str_m30 osc str_M 0 str_Zosc 0. 0.
+@str_m31 osc str_M 0 str_Zosc 0. 0.
+@str_m32 osc str_M 0 str_Zosc 0. 0.
+@str_m33 osc str_M 0 str_Zosc 0. 0.
+@str_m34 osc str_M 0 str_Zosc 0. 0.
+@str_m35 osc str_M 0 str_Zosc 0. 0.
+@str_m36 osc str_M 0 str_Zosc 0. 0.
+@str_m37 osc str_M 0 str_Zosc 0. 0.
+@str_m38 osc str_M 0 str_Zosc 0. 0.
+@str_m39 osc str_M 0 str_Zosc 0. 0.
+@str_m40 osc str_M 0 str_Zosc 0. 0.
+@str_m41 osc str_M 0 str_Zosc 0. 0.
+@str_m42 osc str_M 0 str_Zosc 0. 0.
+@str_m43 osc str_M 0 str_Zosc 0. 0.
+@str_m44 osc str_M 0 str_Zosc 0. 0.
+@str_m45 osc str_M 0 str_Zosc 0. 0.
+@str_m46 osc str_M 0 str_Zosc 0. 0.
+@str_m47 osc str_M 0 str_Zosc 0. 0.
+@str_m48 osc str_M 0 str_Zosc 0. 0.
+@str_m49 osc str_M 0 str_Zosc 0. 0.
+@str_m50 osc str_M 0 str_Zosc 0. 0.
+@str_m51 osc str_M 0 str_Zosc 0. 0.
+@str_m52 osc str_M 0 str_Zosc 0. 0.
+@str_m53 osc str_M 0 str_Zosc 0. 0.
+@str_m54 osc str_M 0 str_Zosc 0. 0.
+@str_m55 osc str_M 0 str_Zosc 0. 0.
+@str_m56 osc str_M 0 str_Zosc 0. 0.
+@str_m57 osc str_M 0 str_Zosc 0. 0.
+@str_m58 osc str_M 0 str_Zosc 0. 0.
+@str_m59 osc str_M 0 str_Zosc 0. 0.
+@str_s1 ground 0.
+
+@str_r0 spring @in1 @str_m0 str_K str_Z
+@str_r1 spring @str_m0 @str_m1 str_K str_Z
+@str_r2 spring @str_m1 @str_m2 str_K str_Z
+@str_r3 spring @str_m2 @str_m3 str_K str_Z
+@str_r4 spring @str_m3 @str_m4 str_K str_Z
+@str_r5 spring @str_m4 @str_m5 str_K str_Z
+@str_r6 spring @str_m5 @str_m6 str_K str_Z
+@str_r7 spring @str_m6 @str_m7 str_K str_Z
+@str_r8 spring @str_m7 @str_m8 str_K str_Z
+@str_r9 spring @str_m8 @str_m9 str_K str_Z
+@str_r10 spring @str_m9 @str_m10 str_K str_Z
+@str_r11 spring @str_m10 @str_m11 str_K str_Z
+@str_r12 spring @str_m11 @str_m12 str_K str_Z
+@str_r13 spring @str_m12 @str_m13 str_K str_Z
+@str_r14 spring @str_m13 @str_m14 str_K str_Z
+@str_r15 spring @str_m14 @str_m15 str_K str_Z
+@str_r16 spring @str_m15 @str_m16 str_K str_Z
+@str_r17 spring @str_m16 @str_m17 str_K str_Z
+@str_r18 spring @str_m17 @str_m18 str_K str_Z
+@str_r19 spring @str_m18 @str_m19 str_K str_Z
+
+@str_r20 spring @str_m19 @str_m20 str_K str_Z
+@det_1 contact @str_m19 @str_m20 det_K det_Z 0.
+
+@str_r21 spring @str_m20 @str_m21 str_K str_Z
+@str_r22 spring @str_m21 @str_m22 str_K str_Z
+@str_r23 spring @str_m22 @str_m23 str_K str_Z
+@str_r24 spring @str_m23 @str_m24 str_K str_Z
+@str_r25 spring @str_m24 @str_m25 str_K str_Z
+@str_r26 spring @str_m25 @str_m26 str_K str_Z
+@str_r27 spring @str_m26 @str_m27 str_K str_Z
+@str_r28 spring @str_m27 @str_m28 str_K str_Z
+@str_r29 spring @str_m28 @str_m29 str_K str_Z
+@str_r30 spring @str_m29 @str_m30 str_K str_Z
+@str_r31 spring @str_m30 @str_m31 str_K str_Z
+@str_r32 spring @str_m31 @str_m32 str_K str_Z
+@str_r33 spring @str_m32 @str_m33 str_K str_Z
+@str_r34 spring @str_m33 @str_m34 str_K str_Z
+@str_r35 spring @str_m34 @str_m35 str_K str_Z
+@str_r36 spring @str_m35 @str_m36 str_K str_Z
+@str_r37 spring @str_m36 @str_m37 str_K str_Z
+@str_r38 spring @str_m37 @str_m38 str_K str_Z
+@str_r39 spring @str_m38 @str_m39 str_K str_Z
+
+@str_r40 spring @str_m39 @str_m40 str_K str_Z
+@det_2 contact @str_m39 @str_m40 det_K det_Z 0.
+
+@str_r41 spring @str_m40 @str_m41 str_K str_Z
+@str_r42 spring @str_m41 @str_m42 str_K str_Z
+@str_r43 spring @str_m42 @str_m43 str_K str_Z
+@str_r44 spring @str_m43 @str_m44 str_K str_Z
+@str_r45 spring @str_m44 @str_m45 str_K str_Z
+@str_r46 spring @str_m45 @str_m46 str_K str_Z
+@str_r47 spring @str_m46 @str_m47 str_K str_Z
+@str_r48 spring @str_m47 @str_m48 str_K str_Z
+@str_r49 spring @str_m48 @str_m49 str_K str_Z
+@str_r50 spring @str_m49 @str_m50 str_K str_Z
+@str_r51 spring @str_m50 @str_m51 str_K str_Z
+@str_r52 spring @str_m51 @str_m52 str_K str_Z
+@str_r53 spring @str_m52 @str_m53 str_K str_Z
+@str_r54 spring @str_m53 @str_m54 str_K str_Z
+@str_r55 spring @str_m54 @str_m55 str_K str_Z
+@str_r56 spring @str_m55 @str_m56 str_K str_Z
+@str_r57 spring @str_m56 @str_m57 str_K str_Z
+@str_r58 spring @str_m57 @str_m58 str_K str_Z
+@str_r59 spring @str_m58 @str_m59 str_K str_Z
+@str_r60 spring @str_m59 @str_s1 str_K str_Z
+
+@out1 posOutput @str_m15 
+@out2 posOutput @str_m35
+@out3 posOutput @str_m55 
+
