@@ -28,7 +28,7 @@ class Main(QtWidgets.QMainWindow):
 
         self.changesSaved = True
 
-        self.dict = ["none","param","mass", "massG","osc","ground", "springDamper", "damper",
+        self.dict = ["none","param", "audioParam", "mass", "massG","osc","ground", "springDamper", "damper",
                      "spring", "nlSpring", "nlSpring2", "nlSpring3","nlPluck", "nlBow","contact",
                      "posInput","frcInput","posOutput","frcOutput"]
 
@@ -283,7 +283,20 @@ class Main(QtWidgets.QMainWindow):
             self.compileTargetName += ".gendsp"
 
         phyGen = physicsGen.PhysicsGenParser()
-        phyGen.parseModel(self.textEdit.toPlainText(),True)
+        err, s = phyGen.parseModel(self.textEdit.toPlainText(),True)
+
+
+        if err:
+            popup = QtWidgets.QMessageBox(self)
+            popup.setIcon(QtWidgets.QMessageBox.Warning)
+            popup.setText("Error during model compilation: " + str(err))
+            popup.setInformativeText(s + '\n' + 'Aborting compilation.')
+            popup.setStandardButtons(QtWidgets.QMessageBox.Ok)
+            popup.setDefaultButton(QtWidgets.QMessageBox.Ok)
+            answer = popup.exec_()
+            return
+
+
         phyGen.createDspObj(self.compileTargetName)
 
 
@@ -300,7 +313,17 @@ class Main(QtWidgets.QMainWindow):
             self.compileTargetName += ".dsp"
 
         phyGen = physics2Faust.Physics2Faust()
-        s = phyGen.parseModel(self.textEdit.toPlainText())
+        err, s = phyGen.parseModel(self.textEdit.toPlainText())
+
+        if err:
+            popup = QtWidgets.QMessageBox(self)
+            popup.setIcon(QtWidgets.QMessageBox.Warning)
+            popup.setText("Error during model compilation: " + str(err))
+            popup.setInformativeText(s + '\n' + 'Aborting compilation.')
+            popup.setStandardButtons(QtWidgets.QMessageBox.Ok)
+            popup.setDefaultButton(QtWidgets.QMessageBox.Ok)
+            answer = popup.exec_()
+            return
 
         with open(self.compileTargetName, "wt") as file:
             file.write(s)

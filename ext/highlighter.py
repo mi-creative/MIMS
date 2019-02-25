@@ -22,6 +22,7 @@ def format(color, style='', sec_style=''):
 # Syntax styles that can be shared by all languages
 STYLES = {
     'param': format('blue', 'bold','italic'),
+    'audioParam': format('blue', 'bold','italic'),
     'ground': format('green', 'bold'),
     'mass': format('darkCyan', 'bold'),
     'mass_grav': format('cyan','bold'),
@@ -57,6 +58,7 @@ class ModelHighlighter (QSyntaxHighlighter):
         rules += [
             # 'self'
             (r'\bparam\b', 0, STYLES['param']),
+            (r'\baudioParam\b', 0, STYLES['param']),
             (r'\bmass\b', 0, STYLES['mass']),
             (r'\bmassG\b', 0, STYLES['mass_grav']),
             (r'\bosc\b', 0, STYLES['osc']),

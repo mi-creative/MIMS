@@ -79,13 +79,6 @@ class PhysicsGenParser():
                                 + ", " + str(len(self.mat_list))
                                 + ", 2);\n")
 
-        # self.motion_code.append(
-        #     motion_name + ".poke(" + mat_name[1:] + "_X, " + str(len(self.mat_list)) + ", 0);\n")
-        # self.motion_code.append(
-        #     motion_name + ".poke(" + str(xpos) + ", " + str(len(self.mat_list)) + ", 1);\n")
-        # self.motion_code.append(
-        #     motion_name + ".poke(" + str(ypos) + ", " + str(len(self.mat_list)) + ", 2);\n")
-
 
     def addMotionBufferToList(self, buffer_name):
         if buffer_name not in self.userBufferList:
@@ -94,17 +87,6 @@ class PhysicsGenParser():
     def declareBufferList(self):
         for buffer in self.userBufferList:
             self.generated_code += "Buffer " + buffer + ";\n"
-
-    # def writeMotionData(self, mList):
-    #     cpt = 0
-    #     s = ""
-    #     while len(mList) > 0:
-    #         name = mList.pop()
-    #         s += self.motionBufferName + ".poke(get_pos(" + name[1:] + "), " + str(cpt) + ");\n"
-    #         cpt = cpt +1
-    #
-    #     print("all OK")
-    #     return s
 
 
     def moduleName(self, mod_label):
@@ -129,6 +111,7 @@ class PhysicsGenParser():
         # dest = open(genCodePath,'w')
 
         error = 0
+        err_msg = ""
 
         self.motion_code.clear()
 
@@ -152,7 +135,7 @@ class PhysicsGenParser():
                 if(nb_args > 2):
                     if l[1] == "param":
                         self.param_code.append(phyMdlCodeGenerator.genParamCode(l[0][1:], l[2]))
-                    elif l[1] == "paramAudio":
+                    elif l[1] == "audioParam":
                         self.audio_param_code.append(phyMdlCodeGenerator.genParamAudioCode(l[0][1:], l[2][1:]))
                         self.inputs += 1
 
@@ -169,8 +152,9 @@ class PhysicsGenParser():
                                 self.addMotionBufferToList(str(l[3]))
                             self.mat_list.append(l[0])
                         else:
-                            print("Error: Wrong number of parameters for ground module: " + str(l))
-                            return -1
+                            error = -1
+                            err_msg = "Error: Wrong number of parameters for ground module: " + str(l)
+                            break
 
                     elif l[1] == "mass":
                         if (nb_args == 5) or (nb_args == 8):
@@ -185,8 +169,9 @@ class PhysicsGenParser():
                                 self.addMotionBufferToList(str(l[5]))
                             self.mat_list.append(l[0])
                         else:
-                            print("Error: Wrong number of parameters for  module: " + str(l))
-                            return -1
+                            error = -2
+                            err_msg = "Error: Wrong number of parameters for mass module: " + str(l)
+                            break
 
                     elif l[1] == "massG":
                         if (nb_args == 6) or (nb_args == 9):
@@ -201,8 +186,9 @@ class PhysicsGenParser():
                                 self.addMotionBufferToList(str(l[6]))
                             self.mat_list.append(l[0])
                         else:
-                            print("Error: Wrong number of parameters for  module: " + str(l))
-                            return -1
+                            error = -3
+                            err_msg = "Error: Wrong number of parameters for massG module: " + str(l)
+                            break
 
                     elif l[1] == "osc":
                         if (nb_args == 7) or (nb_args == 10):
@@ -217,8 +203,9 @@ class PhysicsGenParser():
                                 self.addMotionBufferToList(str(l[7]))
                             self.mat_list.append(l[0])
                         else:
-                            print("Error: Wrong number of parameters for  module: " + str(l))
-                            return -1
+                            error = -4
+                            err_msg = "Error: Wrong number of parameters for osc module: " + str(l)
+                            break
 
                     elif l[1] == "spring":
                         if nb_args == 5:
@@ -232,8 +219,9 @@ class PhysicsGenParser():
                             body = phyMdlCodeGenerator.genSpringDamperCode(l[0][1:], m1, m2, l[4], l[5])
                             self.comp_link_code.append(body)
                         else:
-                            print("Error: Wrong number of parameters for  module: " + str(l))
-                            return -1
+                            error = -10
+                            err_msg = "Error: Wrong number of parameters for spring module: " + str(l)
+                            break
 
                     elif l[1] == "damper":
                         if nb_args == 5:
@@ -242,8 +230,9 @@ class PhysicsGenParser():
                             body = phyMdlCodeGenerator.genDamperCode(l[0][1:], m1, m2, l[4])
                             self.comp_link_code.append(body)
                         else:
-                            print("Error: Wrong number of parameters for  module: " + str(l))
-                            return -1
+                            error = -11
+                            err_msg = "Error: Wrong number of parameters for damper module: " + str(l)
+                            break
 
                     elif l[1] == "springDamper":
                         if nb_args == 6:
@@ -252,8 +241,9 @@ class PhysicsGenParser():
                             body = phyMdlCodeGenerator.genSpringDamperCode(l[0][1:], m1, m2, l[4], l[5])
                             self.comp_link_code.append(body)
                         else:
-                            print("Error: Wrong number of parameters for  module: " + str(l))
-                            return -1
+                            error = -12
+                            err_msg = "Error: Wrong number of parameters for springDamper module: " + str(l)
+                            break
 
                     elif l[1] == "contact":
                         if nb_args == 7:
@@ -262,8 +252,9 @@ class PhysicsGenParser():
                             body = phyMdlCodeGenerator.genContactCode(l[0][1:], m1, m2, l[4], l[5], l[6])
                             self.comp_link_code.append(body)
                         else:
-                            print("Error: Wrong number of parameters for  module: " + str(l))
-                            return -1
+                            error = -13
+                            err_msg = "Error: Wrong number of parameters for contact module: " + str(l)
+                            break
 
                     elif l[1] == "nlBow":
                         if nb_args == 6:
@@ -272,8 +263,9 @@ class PhysicsGenParser():
                             body = phyMdlCodeGenerator.genNLBowCode(l[0][1:], m1, m2, l[4], l[5])
                             self.comp_link_code.append(body)
                         else:
-                            print("Error: Wrong number of parameters for  module: " + str(l))
-                            return -1
+                            error = -14
+                            err_msg = "Error: Wrong number of parameters for nlBow module: " + str(l)
+                            break
 
                     elif l[1] == "nlPluck":
                         if nb_args == 6:
@@ -282,8 +274,9 @@ class PhysicsGenParser():
                             body = phyMdlCodeGenerator.genNLPluckCode(l[0][1:], m1, m2, l[4], l[5])
                             self.comp_link_code.append(body)
                         else:
-                            print("Error: Wrong number of parameters for  module: " + str(l))
-                            return -1
+                            error = -15
+                            err_msg = "Error: Wrong number of parameters for nlPick module: " + str(l)
+                            break
 
                     elif l[1] == "nlSpring" or l[1] == "nlSpring2":
                         if nb_args == 7:
@@ -293,8 +286,9 @@ class PhysicsGenParser():
                                                                                l[4], l[5], l[6])
                             self.comp_link_code.append(body)
                         else:
-                            print("Error: Wrong number of parameters for  module: " + str(l))
-                            return -1
+                            error = -16
+                            err_msg = "Error: Wrong number of parameters for nlSpring2 module: " + str(l)
+                            break
 
                     elif l[1] == "nlSpring3":
                         if nb_args == 7:
@@ -304,8 +298,9 @@ class PhysicsGenParser():
                                                                                l[4], l[5], l[6])
                             self.comp_link_code.append(body)
                         else:
-                            print("Error: Wrong number of parameters for  module: " + str(l))
-                            return -1
+                            error = -17
+                            err_msg = "Error: Wrong number of parameters for nlSpring3 module: " + str(l)
+                            break
 
                     elif l[1] == "posInput":
                         if nb_args == 3 or nb_args == 6:
@@ -322,8 +317,9 @@ class PhysicsGenParser():
                                 self.addMotionBufferToList(str(l[3]))
                             self.mat_list.append('@' + mod_name)
                         else:
-                            print("Error: Wrong number of parameters for  module: " + str(l))
-                            return -1
+                            error = -20
+                            err_msg = "Error: Wrong number of parameters for posInput module: " + str(l)
+                            break
 
                     elif l[1] == "frcInput":
                         if nb_args == 3:
@@ -332,8 +328,9 @@ class PhysicsGenParser():
                             self.comp_link_code.append(body)
                             self.inputs += 1
                         else:
-                            print("Error: Wrong number of parameters for  module: " + str(l))
-                            return -1
+                            error = -21
+                            err_msg = "Error: Wrong number of parameters for frcInput module: " + str(l)
+                            break
 
                     elif l[1] == "posOutput":
                         if nb_args == 3:
@@ -342,8 +339,9 @@ class PhysicsGenParser():
                             self.outputs_code.append(body)
                             self.outputs += 1
                         else:
-                            print("Error: Wrong number of parameters for  module: " + str(l))
-                            return -1
+                            error = -22
+                            err_msg = "Error: Wrong number of parameters for posOutput module: " + str(l)
+                            break
 
                     elif l[1] == "frcOutput":
                         if nb_args == 3:
@@ -352,174 +350,17 @@ class PhysicsGenParser():
                             self.outputs_code.append(body)
                             self.outputs += 1
                         else:
-                            print("Error: Wrong number of parameters for  module: " + str(l))
-                            return -1
+                            error = -23
+                            err_msg = "Error: Wrong number of parameters for frcOutput module: " + str(l)
+                            break
 
                     else:
-                        print("Unknown module name.")
-                        return -1
+                        error = -30
+                        err_msg = "Unknown module name" + str(l)
+                        break
 
-        # for line in compList:
-        #     if  line.startswith('#') == True :
-        #         pass
-        #     else :
-        #         rCom = line.rsplit('#')
-        #         l = rCom[0].rsplit()
-        #         #####################################################
-        #         ###      Generate gendsp code from the model information
-        #         #####################################################
-        #         if(len(l) > 2):
-        #             if l[1] == "param":
-        #                 # Note : changed order for param. Remove @ from parameter name
-        #                 self.structCode.append(phyMdlCodeGenerator.genParamCode(l[0][1:], l[2]))
-        #             if l[1] == "paramAudio":
-        #                 self.audioParamCode.append(phyMdlCodeGenerator.genParamAudioCode(l[0][1:], l[2][1:]))
-        #                 self.inputs += 1
-        # 
-        #             if l[1] == "ground":
-        #                 if (len(l)== 3):     # if no explicit motion data is specified
-        #                     header, body = phyMdlCodeGenerator.genGroundCode(l[0], l[2])
-        #                     self.initCode.append(header)
-        #                     self.matSimCode.append(body)
-        #                     self.writeGenericMotionData(l[0])
-        #                     self.mat_list.append(l[0])
-        #                 elif (len(l) == 6): # if specific position data is supplied
-        #                     header, body = phyMdlCodeGenerator.genGroundCode(l[0], l[2])
-        #                     self.initCode.append(header)
-        #                     self.matSimCode.append(body)
-        #                     self.writeSpecificMotionData(l[0], str(l[3]), l[4], l[5])
-        #                     self.addMotionBufferToList(str(l[3]))
-        #                     self.mat_list.append(l[0])
-        #                 else:
-        #                     print("Error: Wrong number of parameters for  module: " + str(l))
-        # 
-        #             if l[1] == "mass":
-        #                 if (len(l)== 5):     # if no explicit motion data is specified
-        #                     header, body = phyMdlCodeGenerator.genMassCode(l[0], l[2], l[3], l[4])
-        #                     self.structCode.append(header)
-        #                     self.matSimCode.append(body)
-        #                     self.writeGenericMotionData(l[0])
-        #                     self.mat_list.append(l[0])
-        #                 elif (len(l) == 8): # if specific position data is supplied
-        #                     header, body = phyMdlCodeGenerator.genMassCode(l[0], l[2], l[3], l[4])
-        #                     self.structCode.append(header)
-        #                     self.matSimCode.append(body)
-        #                     self.writeSpecificMotionData(l[0], str(l[5]), l[6], l[7])
-        #                     self.addMotionBufferToList(str(l[5]))
-        #                     self.mat_list.append(l[0])
-        #                 else:
-        #                     print("Error: Wrong number of parameters for  module: " + str(l))
-        # 
-        #             if l[1] == "massG":
-        #                 if (len(l)== 6):     # if no explicit motion data is specified
-        #                     header, body = phyMdlCodeGenerator.genMassGravityCode(l[0], l[2], l[3], l[4], l[5])
-        #                     self.structCode.append(header)
-        #                     self.matSimCode.append(body)
-        #                     self.writeGenericMotionData(l[0])
-        #                     self.mat_list.append(l[0])
-        #                 elif (len(l) == 9): # if specific position data is supplied
-        #                     header, body = phyMdlCodeGenerator.genMassGravityCode(l[0], l[2], l[3], l[4], l[5])
-        #                     self.structCode.append(header)
-        #                     self.matSimCode.append(body)
-        #                     self.writeSpecificMotionData(l[0], str(l[6]), l[7], l[8])
-        #                     self.addMotionBufferToList(str(l[6]))
-        #                     self.mat_list.append(l[0])
-        #                 else:
-        #                     print("Error: Wrong number of parameters for  module: " + str(l))
-        # 
-        #             if l[1] == "osc":
-        #                 if (len(l)== 7):     # if no explicit motion data is specified
-        #                     header, body = phyMdlCodeGenerator.genCelCode(l[0], l[2], l[3], l[4], l[5], l[6])
-        #                     self.structCode.append(header)
-        #                     self.matSimCode.append(body)
-        #                     self.writeGenericMotionData(l[0])
-        #                     self.mat_list.append(l[0])
-        #                 elif (len(l) == 10): # if specific position data is supplied
-        #                     header, body = phyMdlCodeGenerator.genCelCode(l[0], l[2], l[3], l[4], l[5], l[6])
-        #                     self.structCode.append(header)
-        #                     self.matSimCode.append(body)
-        #                     self.writeSpecificMotionData(l[0], str(l[7]), l[8], l[9])
-        #                     self.addMotionBufferToList(str(l[7]))
-        #                     self.mat_list.append(l[0])
-        #                 else:
-        #                     print("Error: Wrong number of parameters for  module: " + str(l))
-        # 
-        #             if l[1] == "spring":
-        #                 error = errorCheck(l, 6)
-        #                 if (error == 0):
-        #                     body =  phyMdlCodeGenerator.genSpringCode(l[0], l[2], l[3], l[4], l[5])
-        #                     self.interactSimCode.append(body)
-        #                 else:
-        #                     break
-        # 
-        #             if l[1] == "detent":
-        #                 error = errorCheck(l, 7)
-        #                 if (error == 0):
-        #                     body =  phyMdlCodeGenerator.genDetentCode(l[0], l[2], l[3], l[4], l[5], l[6])
-        #                     self.interactSimCode.append(body)
-        #                 else:
-        #                     break
-        # 
-        #             if l[1] == "nlBow":
-        #                 error = errorCheck(l, 6)
-        #                 if (error == 0):
-        #                     body =  phyMdlCodeGenerator.genNLBowCode(l[0], l[2], l[3], l[4], l[5])
-        #                     self.interactSimCode.append(body)
-        #                 else:
-        #                     break
-        # 
-        #             if l[1] == "nlPluck":
-        #                 error = errorCheck(l, 6)
-        #                 if (error == 0):
-        #                     body =  phyMdlCodeGenerator.genNLPluckCode(l[0], l[2], l[3], l[4], l[5])
-        #                     self.interactSimCode.append(body)
-        #                 else:
-        #                     break
-        # 
-        #             if l[1] == "nlSpring":
-        #                 error = errorCheck(l, 7)
-        #                 if (error == 0):
-        #                     body =  phyMdlCodeGenerator.genNLSpringCode(l[0], l[2], l[3], l[4], l[5], l[6])
-        #                     self.interactSimCode.append(body)
-        #                 else:
-        #                     break
-        # 
-        #             if l[1] == "posInput":
-        #                 error = errorCheck(l, 3)
-        #                 if (error == 0):
-        #                     header, body  =  phyMdlCodeGenerator.genPosInputCode(l[0], l[2])
-        #                     self.structCode.append(header)
-        #                     self.matSimCode.append(body)
-        #                     self.inputs += 1
-        #                 else:
-        #                     break
-        # 
-        #             if l[1] == "frcInput":
-        #                 error = errorCheck(l, 3)
-        #                 if (error == 0):
-        #                     body =  phyMdlCodeGenerator.genForceInputCode(l[0], l[2])
-        #                     self.interactSimCode.append(body)
-        #                     self.inputs += 1
-        #                 else:
-        #                     break
-        # 
-        #             if l[1] == "posOutput":
-        #                 error = errorCheck(l, 3)
-        #                 if (error == 0):
-        #                     body =  phyMdlCodeGenerator.genPosOutputCode(l[0], l[2])
-        #                     self.interactSimCode.append(body)
-        #                     self.outputs += 1
-        #                 else:
-        #                     break
-        # 
-        #             if l[1] == "frcOutput":
-        #                 error = errorCheck(l, 3)
-        #                 if (error == 0):
-        #                     body =  phyMdlCodeGenerator.genForceOutputCode(l[0], l[2])
-        #                     self.initCode.append(body)
-        #                     self.outputs += 1
-        #                 else:
-        #                     break
+        if error:
+            return error, err_msg
 
         ########################################################
         ####       Write the generated code to the output destination,
@@ -595,7 +436,7 @@ class PhysicsGenParser():
 
             print(self.generated_code)
 
-        print("all OK")
+        return 0, "all OK"
 
     def createDspObj(self, targetPath):
         self.generated_code = self.generated_code.replace('\n', '\\r\\n')

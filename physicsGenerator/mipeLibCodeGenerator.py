@@ -171,7 +171,7 @@ def genPosOutputCode(x_out, out_channel):
     return s
 
 
-def genFrcOutputCode(f_out, out_channel):
+def genForceOutputCode(f_out, out_channel):
     s = out_channel + " =  " + "get_frc(" + f_out + ");"
     return s
 

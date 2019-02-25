@@ -89,6 +89,7 @@ class Physics2Faust():
     def parseModel(self, modelDescr):
 
         error = 0
+        error_msg =""
 
         print("About to enter model generation...")
 
@@ -109,6 +110,9 @@ class Physics2Faust():
                     if l[1] == "param":
                         self.indexedParams.append([l[0][1:], l[2]])
 
+                    if l[1] == "audioParam":
+                        self.indexedParams.append([l[0][1:], l[2]])
+
                     if l[1] == "ground":
                         self.matModuleDict["ground"].append([l[0], l[2]])
 
@@ -116,34 +120,58 @@ class Physics2Faust():
                         if (len(l) == 5) or (len(l) == 8):
                             self.matModuleDict["mass"].append([l[0], l[2], l[3], l[4]])
                         else:
+                            error = -1
+                            error_msg = "Can't allocate mass module (wrong number of parameters)"
                             break
                     if l[1] == "osc":
                         if (len(l) == 7) or (len(l) == 10):
                             self.matModuleDict["osc"].append([l[0], l[2], l[3], l[4], l[5] , l[6]])
                         else:
+                            error = -2
+                            error_msg = "Can't allocate osc module (wrong number of parameters)"
                             break
 
-                    if l[1] == "spring":
+                    ## Currently, all springs, dampers or springDampers generate "springs" in Faust
+
+                    if l[1] == "spring" or l[1] == "springDamper":
                         if (len(l) == 6):
                             self.linkModuleDict["spring"].append([l[0], l[2], l[3], l[4], l[5]])
+                        elif (len(l) == 5):
+                            self.linkModuleDict["spring"].append([l[0], l[2], l[3], l[4], 0])
                         else:
+                            error = -10
+                            error_msg = "Issue allocating spring type module (wrong number of parameters)"
                             break
-                    if l[1] == "detent":
-                        if (len(l) == 7):
+                    if l[1] == "damper":
+                        if len(l) == 5:
+                            self.linkModuleDict["spring"].append([l[0], l[2], l[3], 0, l[4]])
+                        else:
+                            error = -11
+                            error_msg = "Issue allocating damper type module (wrong number of parameters)"
+                            break
+
+                    if l[1] == "contact":
+                        if len(l) == 7:
                             self.linkModuleDict["collision"].append([l[0], l[2], l[3], l[4], l[5], l[6]])
                         else:
+                            error = -12
+                            error_msg = "Issue allocating contact type module (wrong number of parameters)"
                             break
 
                     if l[1] == "nlBow":
                         if (len(l) == 6):
                             self.linkModuleDict["nlBow"].append([l[0], l[2], l[3], l[4], l[5]])
                         else:
+                            error = -13
+                            error_msg = "Issue allocating nlBow type module (wrong number of parameters)"
                             break
 
                     if l[1] == "nlPluck":
                         if (len(l) == 6):
                             self.linkModuleDict["nlPluck"].append([l[0], l[2], l[3], l[4], l[5]])
                         else:
+                            error = -14
+                            error_msg = "Issue allocating nlPluck type module (wrong number of parameters)"
                             break
 
                     if l[1] == "posOutput":
@@ -151,6 +179,8 @@ class Physics2Faust():
                             self.outputMasses.append(l[2])
                             self.outputs += 1
                         else:
+                            error = -15
+                            error_msg = "Issue allocating position output (wrong number of parameters)"
                             break
                     if l[1] == "posInput":
                         if (len(l) == 3):
@@ -158,13 +188,29 @@ class Physics2Faust():
                             self.inputs += 1
                             self.inNames.append(l[0][1:])
                         else:
+                            error = -16
+                            error_msg = "Issue allocating position input (wrong number of parameters)"
                             break
 
                     if l[1] == "frcInput":
                         if (len(l) == 3):
                             self.frcInputs.append([l[0][1:], l[2]])
                         else:
+                            error = -17
+                            error_msg = "Issue allocating force input (wrong number of parameters)"
                             break
+
+                    if l[1] == "nlSpring" or l[1] == "nlSpring2" or l[1] == "nlSpring3":
+                        error = -18
+                        error_msg = "Non-linear springs are not yet available in FAUST"
+                        break
+                    if l[1] == "frcOutput":
+                        error = -19
+                        error_msg = "Force output is not yet available in FAUST"
+                        break
+
+        if error:
+            return error, error_msg
 
         pp.pprint(self.matModuleDict)
         pp.pprint(self.linkModuleDict)
@@ -432,7 +478,7 @@ class Physics2Faust():
 
         if debug_mode:
             print(s)
-        return s
+        return 0, s
 
 
 
@@ -450,7 +496,7 @@ if __name__ == "__main__":
         with open(mdl_file, "rt") as file:
             phyGen = Physics2Faust()
             mdlcode = file.read()
-            dspcode = phyGen.parseModel(mdlcode)
+            dspcode = phyGen.parseModel(mdlcode)[1]
 
         with open(dsp_file, "wt") as file:
             file.write(dspcode)
