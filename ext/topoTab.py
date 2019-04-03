@@ -51,20 +51,20 @@ class genericTopoWidget( QtWidgets.QWidget):
 
         self.mParam = QtWidgets.QDoubleSpinBox()
         self.mParam.setMinimum(0.000000000001)
-        self.mParam.setDecimals(10)
+        self.mParam.setDecimals(8)
         self.mParam.setValue(1.0)
 
         self.kParam = QtWidgets.QDoubleSpinBox()
         self.kParam.setMinimum(0.)
-        self.kParam.setDecimals(10)
+        self.kParam.setDecimals(8)
         self.kParam.setValue(0.1)
 
         self.zParam = QtWidgets.QDoubleSpinBox()
-        self.zParam.setDecimals(10)
+        self.zParam.setDecimals(8)
         self.zParam.setValue(0.01)
 
         self.zoscParam = QtWidgets.QDoubleSpinBox()
-        self.zoscParam.setDecimals(10)
+        self.zoscParam.setDecimals(8)
         self.zoscParam.setValue(0.0)
         self.zoscParam.setEnabled(False)
 
@@ -195,6 +195,91 @@ class StringGenTab(genericTopoWidget):
                                       zoscName)
 
         self.genScript.emit(genString)
+
+
+
+class StiffStringGenTab(genericTopoWidget):
+    def __init__(self, parent=None):
+        genericTopoWidget.__init__(self, "StiffString", parent)
+        self.initSpecificUI()
+
+    def initSpecificUI(self):
+        self.name.setText("stiff")
+
+        self.specWidget = QtWidgets.QWidget()
+        hLayout = QtWidgets.QHBoxLayout()
+        self.specWidget.setLayout(hLayout)
+
+        self.strLen = QtWidgets.QSpinBox()
+        self.strLen.setMinimum(1)
+        self.strLen.setMaximum(1000)
+        self.strLen.setValue(10)
+
+        self.stiffParam = QtWidgets.QDoubleSpinBox()
+        self.stiffParam.setMinimum(0.)
+        self.stiffParam.setDecimals(10)
+        self.stiffParam.setValue(0.1)
+
+        self.stiffIndexName = QtWidgets.QLineEdit()
+        self.stiffIndexed = QtWidgets.QCheckBox("indexed param")
+        self.stiffIndexName.setEnabled(False)
+
+
+        hLayout.addWidget(QtWidgets.QLabel("Length:"),0)
+        hLayout.addWidget(self.strLen, 1)
+        self.layout.addWidget(QtWidgets.QLabel("2nd order stiff:"))
+        self.layout.addWidget(self.stiffParam)
+        self.layout.addWidget(self.stiffIndexed)
+        self.layout.addWidget(self.stiffIndexName)
+
+        self.stiffIndexed.stateChanged.connect(self.onStiff2ParamState)
+
+        self.name.textChanged.connect(self.extraOnNameChanged)
+
+
+        self.vLayout.addWidget(self.specWidget)
+
+    def extraOnNameChanged(self, name):
+        self.stiffIndexName.setText(name + "_K2")
+
+    def onStiff2ParamState(self, state):
+        self.stiffIndexName.setEnabled(state)
+        self.stiffIndexed = state
+
+    def generateStructure(self):
+        mName = None
+        kName = None
+        zName = None
+        zoscName = None
+        stiffName = None
+
+        if self.indexMassParam:
+            mName = self.mIndexName.text()
+        if self.indexStiffnessParam:
+            kName = self.kIndexName.text()
+        if self.indexDampingParam:
+            zName = self.zIndexName.text()
+        if self.indexZoscParam:
+            zoscName = self.zoscIndexName.text()
+        #if self.indexZoscParam:
+        stiffName = self.stiffIndexName.text()
+
+        genString = physicsGenerator.topologyGenerator.createStiffString(self.strLen.value(),
+                                      self.name.text(),
+                                      self.mParam.value(),
+                                      self.kParam.value(),
+                                      self.zParam.value(),
+                                      self.stiffParam.value(),
+                                      self.hasInternalDamping,
+                                      self.zoscParam.value(),
+                                      mName,
+                                      kName,
+                                      zName,
+                                      stiffName,
+                                      zoscName)
+
+        self.genScript.emit(genString)
+
 
 
 class SquareMeshGenTab(genericTopoWidget):

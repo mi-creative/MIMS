@@ -25,6 +25,12 @@ class createTopo(QtWidgets.QDialog):
 
         self.stringTab.genScript.connect(self.onGeneratedStruct)
 
+        self.stiffStringTab = ext.topoTab.StiffStringGenTab()
+        self.tabWidget.addTab(self.stiffStringTab, "Stiff String")
+
+        self.stiffStringTab.genScript.connect(self.onGeneratedStruct)
+
+
         self.meshTab = ext.topoTab.SquareMeshGenTab()
         self.tabWidget.addTab(self.meshTab, "Square Mesh")
         self.meshTab.genScript.connect(self.onGeneratedStruct)

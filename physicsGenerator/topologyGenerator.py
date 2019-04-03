@@ -58,6 +58,97 @@ def createString(size, name, M, K, Z, hasZosc, Zosc,
     return s
 
 
+
+
+def createStiffString(size, name, M, K, Z, stiffK, hasZosc, Zosc,
+                      mParamName=None, kParamName=None, zParamName=None, stiffParamName = None, zoscParamName=None):
+    s = ""
+
+    zoscVal = ""
+
+    if mParamName:
+        s += "@" + mParamName + " param " + str(M) + "\n"
+        massVal = mParamName
+    else:
+        massVal = str(M)
+    if kParamName:
+        s += "@" + kParamName + " param " + str(K) + "\n"
+        kVal = kParamName
+    else:
+        kVal = str(K)
+    if zParamName:
+        s += "@" + zParamName + " param " + str(Z) + "\n"
+        dampVal = zParamName
+    else:
+        dampVal = str(Z)
+
+    if stiffParamName:
+        s += "@" + stiffParamName + " param " + str(stiffK) + "\n"
+        stiffVal = stiffParamName
+    else:
+        stiffVal = str(stiffK)
+
+    if hasZosc:
+        if zoscParamName:
+            s += "@" + zoscParamName + " param " + str(Zosc) + "\n"
+            zoscVal = zoscParamName
+        else:
+            zoscVal = str(Zosc)
+    s += "\n"
+
+    ground_0 = "@" + name + "_s0"
+    ground_1 = "@" + name + "_s1"
+
+
+    s += ground_0 + " ground 0.\n"
+    i = 0
+    while i < size:
+        if not hasZosc:
+            s += "@" + name + "_m" + str(i) + " mass " + massVal + " 0. 0.\n"
+        else:
+            s += "@" + name + "_m" + str(i) + " osc " + massVal + " 0 " + zoscVal + " 0. 0.\n"
+        i = i + 1
+    s += ground_1 + " ground 0.\n"
+    s += "\n"
+
+
+    i = 0
+    while i < size:
+
+        current = "@" + name + "_m" + str(i)
+
+        n1 = "@" + name + "_m" + str(i + 1)
+        n2 = "@" + name + "_m" + str(i + 2)
+
+        if(i == 0):
+            current = ground_0
+        if(i > size-3):
+            n2 = ground_1
+        if (i > size-2):
+            n1 = ground_1
+
+        s += "@" + name + "_r" + str(i + 1) + " spring "
+        s += current + " " + n1 + " "
+        s += kVal + " " + dampVal + "\n"
+
+        s += "@" + name + "_rs" + str(i + 1) + " spring "
+        s += current + " " + n2 + " "
+        s += stiffVal + "\n"
+
+        i = i + 1
+    s += "\n"
+
+
+    return s
+
+
+
+
+
+
+
+
+
 def createMembrane(sizeL, sizeH, name, M, K, Z, hasZosc, Zosc,
                  mParamName=None, kParamName=None, zParamName=None, zoscParamName=None,
                    mem_name = "membrane", spacing = 0.1):
