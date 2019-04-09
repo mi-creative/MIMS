@@ -19,6 +19,8 @@ class createTopo(QtWidgets.QDialog):
         self.layout = QtWidgets.QVBoxLayout()
         self.layout.addWidget(self.tabWidget)
         self.setLayout(self.layout)
+        self.setWindowTitle("Generate Physical Structures !")
+        self.setWindowIcon(QtGui.QIcon("icons/generate.png"))
 
         self.stringTab = ext.topoTab.StringGenTab()
         self.tabWidget.addTab(self.stringTab, "String")

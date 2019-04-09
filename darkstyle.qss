@@ -421,6 +421,8 @@ QTabBar::tab:selected
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
     margin-bottom: 0px;
+    background-color: QLinearGradient(x1:0, y1:0, x2:0, y2:1, stop:1 #212121, stop:.4 #444444);
+    color : #ffffff;
 }
 
 QTabBar::tab:!selected:hover
@@ -470,10 +472,13 @@ QRadioButton::indicator:hover, QCheckBox::indicator:hover
 
 QCheckBox::indicator:checked
 {
-    image:url(:/images/checkbox.png);
+    border: 1px solid #ffffff;
+    background-color: #a2a2a2;
+    /*image:url(:/images/checkbox.png);*/
 }
 
 QCheckBox::indicator:disabled, QRadioButton::indicator:disabled
 {
-    border: 1px solid #444;
+    border: 1px solid #b1b1b1;
+    color: #b1b1b1;
 }

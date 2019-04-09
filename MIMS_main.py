@@ -8,7 +8,7 @@ sys.path.append("..")
 from ext import highlighter, createTopology, find
 from physicsGenerator import physics2Faust,physicsGen
 
-version = "0.1"
+version = "0.2"
 
 
 class Main(QtWidgets.QMainWindow):
@@ -67,12 +67,12 @@ class Main(QtWidgets.QMainWindow):
         self.quitAction.triggered.connect(self.quit)
 
 
-        self.compileAction = QtWidgets.QAction(QtGui.QIcon("icons/count.png"),"Compile into Gen", self)
+        self.compileAction = QtWidgets.QAction(QtGui.QIcon("icons/2gen.png"),"Compile into Gen", self)
         self.compileAction.setStatusTip("Compile the model file into Gen DSP Code")
         self.compileAction.setShortcut("Ctrl+G")
         self.compileAction.triggered.connect(self.compile)
 
-        self.faustCompileAction = QtWidgets.QAction(QtGui.QIcon("icons/count.png"),"Compile into Faust DSP", self)
+        self.faustCompileAction = QtWidgets.QAction(QtGui.QIcon("icons/2faust.png"),"Compile into Faust DSP", self)
         self.faustCompileAction.setStatusTip("Compile the model file into Faust DSP Code")
         self.faustCompileAction.setShortcut("Ctrl+D")
         self.faustCompileAction.triggered.connect(self.faustCompile)
@@ -92,12 +92,12 @@ class Main(QtWidgets.QMainWindow):
         self.pasteAction.setShortcut("Ctrl+V")
         self.pasteAction.triggered.connect(self.textEdit.paste)
 
-        self.commentAction = QtWidgets.QAction(QtGui.QIcon("icons/indent.png"), "Comment Line / Selection", self)
+        self.commentAction = QtWidgets.QAction(QtGui.QIcon("icons/comment.png"), "Comment Line / Selection", self)
         self.commentAction.setStatusTip("Comment line or selection")
         self.commentAction.setShortcut("Ctrl+/")
         self.commentAction.triggered.connect(self.comment)
 
-        self.uncommentAction = QtWidgets.QAction(QtGui.QIcon("icons/dedent.png"), "Uncomment Line / Selection", self)
+        self.uncommentAction = QtWidgets.QAction(QtGui.QIcon("icons/uncomment.png"), "Uncomment Line / Selection", self)
         self.uncommentAction.setStatusTip("Uncomment line or selection")
         self.uncommentAction.setShortcut("Ctrl+/")
         self.uncommentAction.triggered.connect(self.uncomment)
@@ -117,7 +117,7 @@ class Main(QtWidgets.QMainWindow):
         self.findAction.setShortcut("Ctrl+F")
         self.findAction.triggered.connect(find.Find(self).show)
 
-        self.genAction = QtWidgets.QAction(QtGui.QIcon("icons/find.png"), "Generate Structure", self)
+        self.genAction = QtWidgets.QAction(QtGui.QIcon("icons/generate.png"), "Generate Structure", self)
         self.genAction.setStatusTip("Generate a structure")
         self.genAction.setShortcut("Ctrl+U")
         self.genAction.triggered.connect(createTopology.createTopo(self).show)
@@ -130,13 +130,19 @@ class Main(QtWidgets.QMainWindow):
 
         self.toolbar.addSeparator()
 
+        self.toolbar.addAction(self.undoAction)
+        self.toolbar.addAction(self.redoAction)
+
+        self.toolbar.addSeparator()
+
         self.toolbar.addAction(self.cutAction)
         self.toolbar.addAction(self.copyAction)
         self.toolbar.addAction(self.pasteAction)
+
+        self.toolbar.addSeparator()
+
         self.toolbar.addAction(self.commentAction)
         self.toolbar.addAction(self.uncommentAction)
-        self.toolbar.addAction(self.undoAction)
-        self.toolbar.addAction(self.redoAction)
 
         self.toolbar.addSeparator()
 
@@ -257,6 +263,8 @@ class Main(QtWidgets.QMainWindow):
         with open(self.filename, "wt") as file:
             file.write(self.textEdit.toPlainText())
 
+        self.changesSaved = True
+
     # Factorise this with the regular save button !
     def saveAs(self):
         # PYQT5 Returns a tuple in PyQt5, we only need the filename
@@ -266,6 +274,8 @@ class Main(QtWidgets.QMainWindow):
             self.filename += ".mdl"
         with open(self.filename, "wt") as file:
             file.write(self.textEdit.toPlainText())
+
+        self.changesSaved = True
 
     def quit(self):
         self.close()
@@ -450,7 +460,7 @@ class Main(QtWidgets.QMainWindow):
             popup.setDefaultButton(QtWidgets.QMessageBox.Save)
             answer = popup.exec_()
             if answer == QtWidgets.QMessageBox.Save:
-                self.save()
+                self.saveAs()
             elif answer == QtWidgets.QMessageBox.Discard:
                 event.accept()
             else:
