@@ -13,6 +13,8 @@ import numpy as np
 
 pp = pprint.PrettyPrinter(indent=4)
 
+NEW_ROUTING = False
+
 
 ########################################################
 ####       Error check function: do we have enough parameters?
@@ -277,8 +279,8 @@ class Physics2Faust():
 
 
     def generateFaustCode(self, debug_mode = False):
-        nbLinks = int(np.size(self.matRoutingMatrix, 1) // 2)
-        nbMats = int(np.size(self.matRoutingMatrix, 0))
+        nb_links = int(np.size(self.matRoutingMatrix, 1) // 2)
+        nb_mats = int(np.size(self.matRoutingMatrix, 0))
         nbOut = len(self.outputMasses)
 
         matString = ""
@@ -286,22 +288,22 @@ class Physics2Faust():
         for grndL in self.matModuleDict["ground"]:
             matString += "ground(" + grndL[1] + ")"
             index += 1
-            if index < nbMats:
+            if index < nb_mats:
                 matString += ',\n'
         for massL in self.matModuleDict["mass"]:
-            matString += "mass(" + massL[1] + "," + massL[2]  + ", " + massL[3] + ")"
+            matString += "mass(" + massL[1] + ", " + massL[2]  + ", " + massL[3] + ")"
             index += 1
-            if index < nbMats:
+            if index < nb_mats:
                 matString += ',\n'
         for oscL in self.matModuleDict["osc"]:
-            matString += "osc(" + oscL[1] + "," + oscL[2]  + ", " + oscL[3] + "," + oscL[4]  + ", " + oscL[5] + ")"
+            matString += "osc(" + oscL[1] + ", " + oscL[2]  + ", " + oscL[3] + "," + oscL[4]  + ", " + oscL[5] + ")"
             index += 1
-            if index < nbMats:
+            if index < nb_mats:
                 matString += ',\n'
         for posInL in self.matModuleDict["posInput"]:
             matString += "posInput(" + posInL[1] + ")"
             index += 1
-            if index < nbMats:
+            if index < nb_mats:
                 matString += ',\n'
 
         if debug_mode:
@@ -314,33 +316,33 @@ class Physics2Faust():
                           + ", " + str(self.getPosFromMatId(linkL[1],True)) \
                           + ", " + str(self.getPosFromMatId(linkL[2],True)) + ")"
             index += 1
-            if index < nbLinks:
+            if index < nb_links:
                 linkString += ',\n'
         for linkL in self.linkModuleDict["collision"]:
             linkString += "collision(" + linkL[3] + "," + linkL[4] + "," + linkL[5]  \
                           + ", " + str(self.getPosFromMatId(linkL[1],True)) \
                           + ", " + str(self.getPosFromMatId(linkL[2],True)) + ")"
             index += 1
-            if index < nbLinks:
+            if index < nb_links:
                 linkString += ',\n'
         for linkL in self.linkModuleDict["nlBow"]:
             linkString += "nlBow(" + linkL[3] + "," + linkL[4]  \
                           + ", " + str(self.getPosFromMatId(linkL[1],True)) \
                           + ", " + str(self.getPosFromMatId(linkL[2],True)) + ")"
             index += 1
-            if index < nbLinks:
+            if index < nb_links:
                 linkString += ',\n'
         for linkL in self.linkModuleDict["nlPluck"]:
             linkString += "nlPluck(" + linkL[3] + "," + linkL[4]  + ")"
             index += 1
-            if index < nbLinks:
+            if index < nb_links:
                 linkString += ',\n'
 
         if debug_mode:
             print(linkString)
 
         s =''
-        s += """import("stdfaust.lib");\nimport("mi.lib");\n\n"""
+        s += """import("stdfaust.lib");\nimport("mi.lib");\n"""
 
 
         paramString =""
@@ -362,84 +364,15 @@ class Physics2Faust():
 
         s += paramString
         s += "model = (RoutingLinkToMass: \n" + matString + " :\nRoutingMassToLink : \n" + linkString + ", \
-        par(i, " + str(nbOut) + ",_)\n)~par(i, " + str(2 * nbLinks) + ", _): \
-        par(i, " + str(2 * nbLinks) + ",!), par(i,  " + str(nbOut) + ", _)\n"
+        par(i, " + str(nbOut) + ",_)\n)~par(i, " + str(2 * nb_links) + ", _): \
+        par(i, " + str(2 * nb_links) + ",!), par(i,  " + str(nbOut) + ", _)\n"
 
         s += "with{\n"
 
-        # Generate Link to Mat Routing Function
-        s += "RoutingLinkToMass("
-        for i in range (0,nbLinks-1):
-            s+= "l"+str(i)+"_f1,"
-            s+= "l"+str(i)+"_f2,"
-        s += "l" + str(nbLinks-1) + "_f1,"
-        s += "l" + str(nbLinks - 1) + "_f2"
-
-        for i in range (0, len(self.inNames)):
-            s += ", p_" + self.inNames[i]
-
-        for i in range (0, len(self.frcInputs)):
-            s += ", f_" + self.frcInputs[i][0]
-
-        s += ") = "
-
-        inCpt = 0
-
-
-        for i in range(0, nbMats):
-            routed_forces = ""
-            add = 0
-            # check if there is a force input for this module
-            for frc in self.frcInputs:
-                if frc[1] == i:
-                    if add:
-                        routed_forces += "+"
-                    routed_forces += "f_" + frc[0]
-                    add = 1
-            # check for active links to route
-            for j in range(0, 2 * nbLinks):
-                if(self.matRoutingMatrix[i][j]) == 1:
-                    if add:
-                        routed_forces += "+"
-                    routed_forces += "l" + str(j//2) + "_f" + str((j%2)+1)
-                    add = 1
-            if (routed_forces) == "":
-                s += "0" #9""!"
-            else:
-                s += routed_forces
-            if i >= nbMats - len(self.matModuleDict["posInput"]):
-                s += ", " + "p_" + self.inNames[inCpt]
-                inCpt += 1
-            if i < nbMats-1:
-                s += ", "
-            else:
-                s += ";"
-
-        # If the last Mat was not connected to anything...
-        if s.endswith(", ;"):
-            s = s.replace(", ;", ";")
-
-        # Generate Mat to Link Routing Function
-        s += '\n'
-        s += "RoutingMassToLink("
-        for i in range (0,nbMats-1):
-            s+= "m"+str(i)+","
-        s += "m" + str(nbMats-1) + ") = "
-
-        for i in range(0, 2 * nbLinks):
-            for j in range(0, nbMats):
-                if(self.matRoutingMatrix[j][i]) == 1:
-                    if i < 2*nbLinks-1:
-                        s += "m" + str(j) + ", "
-                    else:
-                        s += "m" + str(j) +","
-
-        # Need to add audio out here !
-        for i, mass in enumerate(self.outputMasses):
-            if i < len(self.outputMasses) - 1:
-                s += "m"+str(self.matModuleMap[mass]) + ","
-            else:
-                s += "m"+str(self.matModuleMap[mass]) + ";"
+        if NEW_ROUTING:
+            s += self.generateRoutingFunctions_NEW()
+        else:
+            s += self.generateRoutingFunctions_OLD()
 
         s += '\n};\n'
 
@@ -480,6 +413,207 @@ class Physics2Faust():
             print(s)
         return 0, s
 
+
+    def generateRoutingFunctions_OLD(self):
+
+        s = ""
+
+        nb_links = int(np.size(self.matRoutingMatrix, 1) // 2)
+        nb_mats = int(np.size(self.matRoutingMatrix, 0))
+
+        # Generate Link to Mat Routing Function
+        s += "RoutingLinkToMass("
+        for i in range (0,nb_links-1):
+            s+= "l"+str(i)+"_f1,"
+            s+= "l"+str(i)+"_f2,"
+        s += "l" + str(nb_links-1) + "_f1,"
+        s += "l" + str(nb_links - 1) + "_f2"
+
+        for i in range (0, len(self.inNames)):
+            s += ", p_" + self.inNames[i]
+
+        for i in range (0, len(self.frcInputs)):
+            s += ", f_" + self.frcInputs[i][0]
+
+        s += ") = "
+
+        inCpt = 0
+
+
+        for i in range(0, nb_mats):
+            routed_forces = ""
+            add = 0
+            # check if there is a force input for this module
+            for frc in self.frcInputs:
+                if frc[1] == i:
+                    if add:
+                        routed_forces += "+"
+                    routed_forces += "f_" + frc[0]
+                    add = 1
+            # check for active links to route
+            for j in range(0, 2 * nb_links):
+                if(self.matRoutingMatrix[i][j]) == 1:
+                    if add:
+                        routed_forces += "+"
+                    routed_forces += "l" + str(j//2) + "_f" + str((j%2)+1)
+                    add = 1
+            if (routed_forces) == "":
+                s += "0" #9""!"
+            else:
+                s += routed_forces
+            if i >= nb_mats - len(self.matModuleDict["posInput"]):
+                s += ", " + "p_" + self.inNames[inCpt]
+                inCpt += 1
+            if i < nb_mats-1:
+                s += ", "
+            else:
+                s += ";"
+
+        # If the last Mat was not connected to anything...
+        if s.endswith(", ;"):
+            s = s.replace(", ;", ";")
+
+        # Generate Mat to Link Routing Function
+        s += '\n'
+        s += "RoutingMassToLink("
+        for i in range (0,nb_mats-1):
+            s+= "m"+str(i)+","
+        s += "m" + str(nb_mats-1) + ") = "
+
+        for i in range(0, 2 * nb_links):
+            for j in range(0, nb_mats):
+                if(self.matRoutingMatrix[j][i]) == 1:
+                    if i < 2*nb_links-1:
+                        s += "m" + str(j) + ", "
+                    else:
+                        s += "m" + str(j) +","
+
+        # Need to add audio out here !
+        for i, mass in enumerate(self.outputMasses):
+            if i < len(self.outputMasses) - 1:
+                s += "m"+str(self.matModuleMap[mass]) + ","
+            else:
+                s += "m"+str(self.matModuleMap[mass]) + ";"
+
+        return s
+
+
+    def generateRoutingFunctions_NEW(self):
+        s = ""
+
+        nb_links = int(np.size(self.matRoutingMatrix, 1) // 2)
+        nb_mats = int(np.size(self.matRoutingMatrix, 0))
+
+        # for i in range (0, len(self.inNames)):
+        #     s += ", p_" + self.inNames[i]
+        #
+        # for i in range (0, len(self.frcInputs)):
+        #     s += ", f_" + self.frcInputs[i][0]
+
+        link2mass = ""
+        mass2link = ""
+
+        for cur_ptL in range(0, nb_links * 2):
+            for cur_ptM in range(0, nb_mats):
+
+                if self.matRoutingMatrix[cur_ptM][cur_ptL]:
+                    link2mass += ", " + str(cur_ptL+1) + "," + str(cur_ptM+1)
+                    mass2link += ", " + str(cur_ptM + 1) + "," + str(cur_ptL + 1)
+
+        pos_out = ""
+        # Need to add audio out here !
+        for i, mass in enumerate(self.outputMasses):
+            if i < len(self.outputMasses):
+                pos_out += ", " + str(self.matModuleMap[mass]+1) + "," + str(nb_links*2 + 1 + i)
+
+
+        
+        s += "RoutingLinkToMass = "
+        s += "route(" + str(nb_links * 2) + ", " + str(nb_mats) + link2mass + ");\n"
+
+        s += "RoutingMassToLink = "
+        s += "route(" + str(nb_mats) + ", " + str(nb_links * 2 + len(self.outputMasses)) + mass2link + pos_out + ");\n"
+
+        print(s)
+
+        return s
+
+
+        # Generate Link to Mat Routing Function
+        s += "RoutingLinkToMass("
+        for i in range (0,nb_links-1):
+            s+= "l"+str(i)+"_f1,"
+            s+= "l"+str(i)+"_f2,"
+        s += "l" + str(nb_links-1) + "_f1,"
+        s += "l" + str(nb_links - 1) + "_f2"
+
+        for i in range (0, len(self.inNames)):
+            s += ", p_" + self.inNames[i]
+
+        for i in range (0, len(self.frcInputs)):
+            s += ", f_" + self.frcInputs[i][0]
+
+        s += ") = "
+
+        inCpt = 0
+
+
+        for i in range(0, nb_mats):
+            routed_forces = ""
+            add = 0
+            # check if there is a force input for this module
+            for frc in self.frcInputs:
+                if frc[1] == i:
+                    if add:
+                        routed_forces += "+"
+                    routed_forces += "f_" + frc[0]
+                    add = 1
+            # check for active links to route
+            for j in range(0, 2 * nb_links):
+                if(self.matRoutingMatrix[i][j]) == 1:
+                    if add:
+                        routed_forces += "+"
+                    routed_forces += "l" + str(j//2) + "_f" + str((j%2)+1)
+                    add = 1
+            if (routed_forces) == "":
+                s += "0" #9""!"
+            else:
+                s += routed_forces
+            if i >= nb_mats - len(self.matModuleDict["posInput"]):
+                s += ", " + "p_" + self.inNames[inCpt]
+                inCpt += 1
+            if i < nb_mats-1:
+                s += ", "
+            else:
+                s += ";"
+
+        # If the last Mat was not connected to anything...
+        if s.endswith(", ;"):
+            s = s.replace(", ;", ";")
+
+        # Generate Mat to Link Routing Function
+        s += '\n'
+        s += "RoutingMassToLink("
+        for i in range (0,nb_mats-1):
+            s+= "m"+str(i)+","
+        s += "m" + str(nb_mats-1) + ") = "
+
+        for i in range(0, 2 * nb_links):
+            for j in range(0, nb_mats):
+                if(self.matRoutingMatrix[j][i]) == 1:
+                    if i < 2*nb_links-1:
+                        s += "m" + str(j) + ", "
+                    else:
+                        s += "m" + str(j) +","
+
+        # Need to add audio out here !
+        for i, mass in enumerate(self.outputMasses):
+            if i < len(self.outputMasses) - 1:
+                s += "m"+str(self.matModuleMap[mass]) + ","
+            else:
+                s += "m"+str(self.matModuleMap[mass]) + ";"
+
+        return s
 
 
 if __name__ == "__main__":
