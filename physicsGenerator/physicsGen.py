@@ -346,7 +346,10 @@ class PhysicsGenParser():
                     elif l[1] == "frcOutput":
                         if nb_args == 3:
                             mod_name = self.moduleName(l[0])
-                            body = phyMdlCodeGenerator.genForceOutputCode(l[2][1:], mod_name)
+                            src = l[2][1:]
+                            if src[0:2] == "in":
+                                src = self.moduleName(l[2])
+                            body = phyMdlCodeGenerator.genForceOutputCode(src, mod_name)
                             self.outputs_code.append(body)
                             self.outputs += 1
                         else:
