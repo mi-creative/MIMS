@@ -14,6 +14,8 @@ If  you have all the necessary Python packages, you should just be able to run *
 
 If you are considering development, any Python IDE (such as Pycharm) should do the trick.
 
+Creation of one-file executable apps for Windows/Mac/Linux is ongoing (for windows, run *pyinstaller MIMS.spec --clean* from the base of the repo) 
+
 ## 2. Features
 
 MIMS allows to describe one-dimensional mass-interaction models, and generade DSP code for the FAUST and Max/MSP environments.

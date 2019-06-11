@@ -10,6 +10,18 @@ from physicsGenerator import physics2Faust,physicsGen
 
 version = "0.2"
 
+if getattr(sys, 'frozen', False):
+    # if you are running in a |PyInstaller| bundle
+    uiDir = sys._MEIPASS
+else:
+    # we are running in a normal Python environment
+    uiDir = os.getcwd()
+    
+htmlDir = os.path.join(uiDir, 'html/')
+iconDir = os.path.join(uiDir, 'icons/')
+styleDir = os.path.join(uiDir, 'style/')
+uiDir = os.path.join(uiDir, 'ui/')
+
 
 class Main(QtWidgets.QMainWindow):
 
@@ -17,9 +29,9 @@ class Main(QtWidgets.QMainWindow):
 
     def __init__(self, parent = None):
         QtWidgets.QMainWindow.__init__(self,parent)
-        uic.loadUi('ui/mainWindow.ui', self)
+        uic.loadUi(uiDir+'mainWindow.ui', self)
 
-        sshFile = "darkstyle.qss"
+        sshFile = styleDir + "darkstyle.qss"
         with open(sshFile, "r") as fh:
             self.setStyleSheet(fh.read())
 
@@ -41,83 +53,83 @@ class Main(QtWidgets.QMainWindow):
 
     def initToolbar(self):
 
-        self.newAction = QtWidgets.QAction(QtGui.QIcon("icons/new.png"),"New", self)
+        self.newAction = QtWidgets.QAction(QtGui.QIcon(iconDir + "new.png"),"New", self)
         self.newAction.setStatusTip("Create a new model description file.")
         self.newAction.setShortcut("Ctrl+N")
         self.newAction.triggered.connect(self.new)
 
-        self.openAction = QtWidgets.QAction(QtGui.QIcon("icons/open.png"),"Open File", self)
+        self.openAction = QtWidgets.QAction(QtGui.QIcon(iconDir + "open.png"),"Open File", self)
         self.openAction.setStatusTip("Open an existing model description file.")
         self.openAction.setShortcut("Ctrl+O")
         self.openAction.triggered.connect(self.open)
 
-        self.saveAction = QtWidgets.QAction(QtGui.QIcon("icons/save.png"),"Save File", self)
+        self.saveAction = QtWidgets.QAction(QtGui.QIcon(iconDir + "save.png"),"Save File", self)
         self.saveAction.setStatusTip("Save model description file.")
         #self.saveAction.setShortcut("Ctrl+S")
         self.saveAction.triggered.connect(self.save)
 
-        self.saveAsAction = QtWidgets.QAction(QtGui.QIcon("icons/save.png"),"Save File As", self)
+        self.saveAsAction = QtWidgets.QAction(QtGui.QIcon(iconDir + "save.png"),"Save File As", self)
         self.saveAsAction.setStatusTip("Save model description file As...")
         self.saveAsAction.setShortcut("Ctrl+S")
         self.saveAsAction.triggered.connect(self.saveAs)
 
-        self.quitAction = QtWidgets.QAction(QtGui.QIcon("icons/icon.png"),"Quit", self)
+        self.quitAction = QtWidgets.QAction(QtGui.QIcon(iconDir + "icon.png"),"Quit", self)
         self.quitAction.setStatusTip("Leave the application.")
         self.quitAction.setShortcut("Ctrl+Q")
         self.quitAction.triggered.connect(self.quit)
 
 
-        self.compileAction = QtWidgets.QAction(QtGui.QIcon("icons/2gen.png"),"Compile into Gen", self)
+        self.compileAction = QtWidgets.QAction(QtGui.QIcon(iconDir + "2gen.png"),"Compile into Gen", self)
         self.compileAction.setStatusTip("Compile the model file into Gen DSP Code")
         self.compileAction.setShortcut("Ctrl+G")
         self.compileAction.triggered.connect(self.compile)
 
-        self.faustCompileAction = QtWidgets.QAction(QtGui.QIcon("icons/2faust.png"),"Compile into Faust DSP", self)
+        self.faustCompileAction = QtWidgets.QAction(QtGui.QIcon(iconDir + "2faust.png"),"Compile into Faust DSP", self)
         self.faustCompileAction.setStatusTip("Compile the model file into Faust DSP Code")
         self.faustCompileAction.setShortcut("Ctrl+D")
         self.faustCompileAction.triggered.connect(self.faustCompile)
 
-        self.cutAction = QtWidgets.QAction(QtGui.QIcon("icons/cut.png"),"Cut to clipboard", self)
+        self.cutAction = QtWidgets.QAction(QtGui.QIcon(iconDir + "cut.png"),"Cut to clipboard", self)
         self.cutAction.setStatusTip("Cut text into clipboard")
         self.cutAction.setShortcut("Ctrl+X")
         self.cutAction.triggered.connect(self.textEdit.cut)
 
-        self.copyAction = QtWidgets.QAction(QtGui.QIcon("icons/copy.png"),"Copy to clipboard", self)
+        self.copyAction = QtWidgets.QAction(QtGui.QIcon(iconDir + "copy.png"),"Copy to clipboard", self)
         self.copyAction.setStatusTip("Copy text to clipboard")
         self.copyAction.setShortcut("Ctrl+C")
         self.copyAction.triggered.connect(self.textEdit.copy)
 
-        self.pasteAction = QtWidgets.QAction(QtGui.QIcon("icons/paste.png"), "Paste from clipboard", self)
+        self.pasteAction = QtWidgets.QAction(QtGui.QIcon(iconDir + "paste.png"), "Paste from clipboard", self)
         self.pasteAction.setStatusTip("Paste text from clipboard")
         self.pasteAction.setShortcut("Ctrl+V")
         self.pasteAction.triggered.connect(self.textEdit.paste)
 
-        self.commentAction = QtWidgets.QAction(QtGui.QIcon("icons/comment.png"), "Comment Line / Selection", self)
+        self.commentAction = QtWidgets.QAction(QtGui.QIcon(iconDir + "comment.png"), "Comment Line / Selection", self)
         self.commentAction.setStatusTip("Comment line or selection")
         self.commentAction.setShortcut("Ctrl+/")
         self.commentAction.triggered.connect(self.comment)
 
-        self.uncommentAction = QtWidgets.QAction(QtGui.QIcon("icons/uncomment.png"), "Uncomment Line / Selection", self)
+        self.uncommentAction = QtWidgets.QAction(QtGui.QIcon(iconDir + "uncomment.png"), "Uncomment Line / Selection", self)
         self.uncommentAction.setStatusTip("Uncomment line or selection")
         self.uncommentAction.setShortcut("Ctrl+/")
         self.uncommentAction.triggered.connect(self.uncomment)
 
-        self.undoAction = QtWidgets.QAction(QtGui.QIcon("icons/undo.png"), "Undo last action", self)
+        self.undoAction = QtWidgets.QAction(QtGui.QIcon(iconDir + "undo.png"), "Undo last action", self)
         self.undoAction.setStatusTip("Undo last action")
         self.undoAction.setShortcut("Ctrl+Z")
         self.undoAction.triggered.connect(self.textEdit.undo)
 
-        self.redoAction = QtWidgets.QAction(QtGui.QIcon("icons/redo.png"), "Redo last undone thing", self)
+        self.redoAction = QtWidgets.QAction(QtGui.QIcon(iconDir + "redo.png"), "Redo last undone thing", self)
         self.redoAction.setStatusTip("Redo last undone thing")
         self.redoAction.setShortcut("Ctrl+Y")
         self.redoAction.triggered.connect(self.textEdit.redo)
 
-        self.findAction = QtWidgets.QAction(QtGui.QIcon("icons/find.png"), "Find/Replace", self)
+        self.findAction = QtWidgets.QAction(QtGui.QIcon(iconDir + "find.png"), "Find/Replace", self)
         self.findAction.setStatusTip("Find and replace elements in model script")
         self.findAction.setShortcut("Ctrl+F")
         self.findAction.triggered.connect(find.Find(self).show)
 
-        self.genAction = QtWidgets.QAction(QtGui.QIcon("icons/generate.png"), "Generate Structure", self)
+        self.genAction = QtWidgets.QAction(QtGui.QIcon(iconDir + "generate.png"), "Generate Structure", self)
         self.genAction.setStatusTip("Generate a structure")
         self.genAction.setShortcut("Ctrl+U")
         self.genAction.triggered.connect(createTopology.createTopo(self).show)
@@ -191,7 +203,7 @@ class Main(QtWidgets.QMainWindow):
 
     def initUI(self):
         self.textEdit.setTabStopWidth(33)
-        self.setWindowIcon(QtGui.QIcon("icons/icon.png"))
+        self.setWindowIcon(QtGui.QIcon(iconDir + "icon.png"))
 
         self.textEdit.cursorPositionChanged.connect(self.cursorPos)
         self.textEdit.textChanged.connect(self.modelStatistics)
@@ -424,7 +436,7 @@ class Main(QtWidgets.QMainWindow):
         # print('Type index: ' + str(typeIndex))
         if typeIndex >= 0:
             try:
-                helpfile = 'html/'+ self.dict[typeIndex] +'-doc.html'
+                helpfile = htmlDir + self.dict[typeIndex] +'-doc.html'
                 # print(helpfile)
                 with open(helpfile, "rt") as file:
                     self.helpLabel.setText(file.read())
