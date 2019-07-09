@@ -43,6 +43,8 @@ STYLES = {
     'posOutput': format('purple','bold', 'italic'),
     'frcOutput': format('purple','bold', 'italic'),
     'names': format('black','bold'),
+    'string': format('pink', 'bold'),
+    'stiffString': format('pink', 'bold'),
 }
 
 
@@ -76,6 +78,8 @@ class ModelHighlighter (QSyntaxHighlighter):
             (r'\bposInput\b', 0, STYLES['posInput']),
             (r'\bposOutput\b', 0, STYLES['posOutput']),
             (r'\bfrcOutput\b', 0, STYLES['frcOutput']),
+            (r'\bstring\b', 0, STYLES['string']),
+            (r'\bstiffString\b', 0, STYLES['stiffString']),
 
             (r'@[^ ]*', 0, STYLES['names']),
 

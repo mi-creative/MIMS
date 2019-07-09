@@ -84,7 +84,27 @@ def genOscGravityCode(name, M, K, Z, grav, initPos, initPosR):
 
     return struct, init, eq
 
+#######################################
+####       String Module: Integrated String
+#######################################
+def genStringCode(name, len, M, K, Z, initPos):
 
+    struct = "Data " + name + "(3, " + str(int(len)) + ");"
+    init = "init_multiple_masses(" + name + ", " + str(initPos) + ", " + str(initPos) + ");"
+    eq = "compute_string(" + name + ", " + M + ", " + K + ", " + Z + ");"
+
+    return struct, init, eq
+
+#######################################
+####       String Module: Integrated String
+#######################################
+def genStiffStringCode(name, len, M, K, K2, Z, initPos):
+
+    struct = "Data " + name + "(3, " + str(int(len)) + ");"
+    init = "init_multiple_masses(" + name + ", " + str(initPos) + ", " + str(initPos) + ");"
+    eq = "compute_stiff_string(" + name + ", " + M + ", " + K + ", " + K2 + ", " + Z + ");"
+
+    return struct, init, eq
 
 
 ##############################
@@ -148,6 +168,14 @@ def genNLPluckCode(name, connect1, connect2, K, scale):
         + K + ", " + scale + ");"
     return s
 
+
+
+def genProxyCode(proxy, connect1, pos):
+    struct = "Data " + proxy + "(3);"
+    init = "init_mat(" + proxy + ", 0, 0);"
+    s1 = "set_proxy_pos("+ proxy + ", " + connect1 + ", " + str(pos) + ", type=0, interp=0);"
+    s2 = "apply_proxy_frc(" + proxy + ", " + connect1 + ", " + str(pos) + ", type=0, interp=0);"
+    return struct, init, s1, s2
 
 
 ##############################

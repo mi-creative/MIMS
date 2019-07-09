@@ -7,6 +7,7 @@ sys.path.append("..")
 
 from ext import highlighter, createTopology, find
 from physicsGenerator import physics2Faust,physicsGen
+import physicsGenerator.phyDict as phyDict
 
 version = "0.2"
 
@@ -46,7 +47,8 @@ class Main(QtWidgets.QMainWindow):
 
         # Set the initial count for module types
         self.occurences = []
-        for type in self.dict:
+
+        for type in phyDict.all_modules:
             self.occurences.append(0)
 
         self.initUI()
@@ -424,8 +426,10 @@ class Main(QtWidgets.QMainWindow):
             self.helpLabel.setText('')
             return index
         type = currentLine.split(' ')[1]
-        if type in self.dict:
-            index = self.dict.index(type)
+        if type in phyDict.all_modules:
+            index = phyDict.all_modules.index(type)
+        #if type in self.dict:
+        #    index = self.dict.index(type)
         else:
             index = -1
         return index
@@ -436,7 +440,8 @@ class Main(QtWidgets.QMainWindow):
         # print('Type index: ' + str(typeIndex))
         if typeIndex >= 0:
             try:
-                helpfile = htmlDir + self.dict[typeIndex] +'-doc.html'
+                helpfile = htmlDir + phyDict.all_modules[typeIndex] + '-doc.html'
+                #helpfile = htmlDir + self.dict[typeIndex] +'-doc.html'
                 # print(helpfile)
                 with open(helpfile, "rt") as file:
                     self.helpLabel.setText(file.read())
@@ -450,7 +455,8 @@ class Main(QtWidgets.QMainWindow):
         s = ""
         for i, occ in enumerate(self.occurences):
             if occ > 0:
-                s += "<b>" + self.dict[i] + "</b> : " + str(occ) + "<br>"
+                s += "<b>" + phyDict.all_modules[i] + "</b> : " + str(occ) + "<br>"
+                #s += "<b>" + self.dict[i] + "</b> : " + str(occ) + "<br>"
         self.mdlLabel.setText(s)
 
     def changed(self):
