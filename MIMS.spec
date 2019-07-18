@@ -2,11 +2,19 @@
 
 block_cipher = None
 
+added_files = [
+         ( 'style', 'style/' ),
+         ( 'ui/', 'ui' ),
+         ( 'html/', 'html' ),
+         ( 'icons/', 'icons' ),
+         ( 'mdls/', 'mdls' )
+         ]
+
 
 a = Analysis(['MIMS_main.py'],
              pathex=['C:\\Users\\leonarja\\devel\\MIMS'],
              binaries=[],
-             datas=[],
+             datas= added_files,
              hiddenimports=[],
              hookspath=[],
              runtime_hooks=[],
@@ -23,17 +31,16 @@ exe = EXE(pyz,
           a.zipfiles,
           a.datas,
           [],
-          name='MIMS',
+          name='MassInteraction_ModelScripter',
           debug=False,
           bootloader_ignore_signals=False,
           strip=False,
           upx=True,
           runtime_tmpdir=None,
-          console=True )
-		  
-		  
-added_files = [
-         ( '/mygame/data', 'data' ),
-         ( '/mygame/sfx/*.mp3', 'sfx' ),
-         ( 'src/README.txt', '.' )
-         ]
+          console=False )
+
+
+app = BUNDLE(exe,
+         name='myscript.app',
+         icon=None,
+         bundle_identifier=None)
