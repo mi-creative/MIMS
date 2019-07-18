@@ -20,6 +20,7 @@ import physicsGenerator.phyMdlDspObjGenerator as phyMdlDspObjGenerator
 
 import physicsGenerator.phyDict as phyDict
 
+from operator import getitem
 
 ########################################################
 ####       Error check function: do we have enough parameters?
@@ -56,7 +57,7 @@ class PhysicsGenParser():
         self.mat_list = []
 
         # List of integrated objects that will require special treatment
-        self.integ_list = []
+        self.macro_list = []
 
         self.nb_proxies = 0
 
@@ -113,24 +114,37 @@ class PhysicsGenParser():
             return mod_label
 
     def checkForProxies(self, name):
-        if name in self.integ_list:
-            return 1
-        else:
-            return 0
+        for i in range(0, len(self.macro_list)):
+            macro_pair = self.macro_list[i]
+            if name == getitem(macro_pair, 0):
+                return 1
+        # if name in self.macro_list:
+        #     return 1
+        # else:
+        return 0
 
     def addProxies(self, name, parameter):
-        if name in self.integ_list:
-            proxy = "proxy_" + str(self.nb_proxies)
-            self.nb_proxies = self.nb_proxies + 1
-            header, init, pMat, pInt = phyMdlCodeGenerator.genProxyCode(proxy, name, parameter)
-            self.struct_code.append(header)
-            self.init_mass_code.append(init)
-            self.comp_proxy_mass_code.append(pMat)
-            self.comp_proxy_link_code.append(pInt)
-            name = proxy
-            return name
-        else:
-            return name
+        # if name in self.macro_list:
+        for i in range(0, len(self.macro_list)):
+            macro_pair = self.macro_list[i]
+            if name == getitem(macro_pair, 0):
+                proxy = "proxy_" + str(self.nb_proxies)
+                self.nb_proxies = self.nb_proxies + 1
+
+                m_dict = getitem(macro_pair, 1)
+                if m_dict["type"] == "string" or m_dict["type"] == "stiffString" or m_dict["type"] == "chain":
+                    header, init, pMat, pInt = phyMdlCodeGenerator.genStringProxyCode(proxy, name, parameter)
+                elif m_dict["type"] == "mesh" or m_dict["type"] == "closedMesh" or m_dict["type"] == "cornerMesh":
+                    header, init, pMat, pInt = phyMdlCodeGenerator.genMeshProxyCode(proxy, name, parameter, m_dict["L"], m_dict["W"])
+
+                self.struct_code.append(header)
+                self.init_mass_code.append(init)
+                self.comp_proxy_mass_code.append(pMat)
+                self.comp_proxy_link_code.append(pInt)
+                name = proxy
+                return name
+        # else:
+        return name
 
 
     ########################################################
@@ -265,9 +279,9 @@ class PhysicsGenParser():
                             self.writeGenericIntegratedMotionData(l[0])
                             for i in range(0, int(l[2])):
                                 self.mat_list.append(l[0]+"_"+str(i))
-                            self.integ_list.append(l[0][1:])
+                            self.macro_list.append((l[0][1:], {"type": l[1], "L": l[2], "W": 1}))
                         else:
-                            error = -5
+                            error = -100
                             err_msg = "Error: Wrong number of parameters for String module: " + str(l)
                             break
 
@@ -280,12 +294,80 @@ class PhysicsGenParser():
                             self.comp_mass_code.append(body)
 
                             self.writeGenericIntegratedMotionData(l[0])
-                            for i in range(0, l[2]):
+                            for i in range(0, int(l[2])):
                                 self.mat_list.append(l[0]+"_"+str(i))
-                            self.integ_list.append(l[0][1:])
+                            # self.macro_list.append((l[0][1:], l[1]))
+                            self.macro_list.append((l[0][1:], {"type": l[1], "L": l[2], "W": 1}))
                         else:
-                            error = -5
+                            error = -101
                             err_msg = "Error: Wrong number of parameters for Stiff String module: " + str(l)
+                            break
+
+                    # Create integrated chain
+                    elif l[1] == "chain":
+                        if nb_args == 7:
+                            header, init, body = phyMdlCodeGenerator.genChainCode(l[0][1:], l[2], l[3], l[4], l[5], l[6])
+                            self.struct_code.append(header)
+                            self.init_mass_code.append(init)
+                            self.comp_mass_code.append(body)
+
+                            self.writeGenericIntegratedMotionData(l[0])
+                            for i in range(0, int(l[2])):
+                                self.mat_list.append(l[0]+"_"+str(i))
+                            self.macro_list.append((l[0][1:], {"type": l[1], "L": l[2], "W": 1}))
+                        else:
+                            error = -102
+                            err_msg = "Error: Wrong number of parameters for chain module: " + str(l)
+                            break
+                    # Create integrated mesh
+                    elif l[1] == "mesh":
+                        if nb_args == 8:
+                            header, init, body = phyMdlCodeGenerator.genMeshCode(l[0][1:], l[2], l[3], l[4], l[5], l[6], l[7])
+                            self.struct_code.append(header)
+                            self.init_mass_code.append(init)
+                            self.comp_mass_code.append(body)
+
+                            self.writeGenericIntegratedMotionData(l[0])
+                            for i in range(0, int(l[2]) * int(l[3])):
+                                self.mat_list.append(l[0]+"_"+str(i))
+                            self.macro_list.append((l[0][1:], {"type": l[1], "L": l[2], "W": l[3]}))
+                        else:
+                            error = -103
+                            err_msg = "Error: Wrong number of parameters for Mesh module: " + str(l)
+                            break
+
+                    # Create integrated closed mesh
+                    elif l[1] == "closedMesh":
+                        if nb_args == 8:
+                            header, init, body = phyMdlCodeGenerator.genClosedMeshCode(l[0][1:], l[2], l[3], l[4], l[5], l[6], l[7])
+                            self.struct_code.append(header)
+                            self.init_mass_code.append(init)
+                            self.comp_mass_code.append(body)
+
+                            self.writeGenericIntegratedMotionData(l[0])
+                            for i in range(0, int(l[2])*int(l[3])):
+                                self.mat_list.append(l[0]+"_"+str(i))
+                            self.macro_list.append((l[0][1:], {"type": l[1], "L": l[2], "W": l[3]}))
+                        else:
+                            error = -104
+                            err_msg = "Error: Wrong number of parameters for closed Mesh module: " + str(l)
+                            break
+
+                    # Create integrated mesh fixed at corners
+                    elif l[1] == "cornerMesh":
+                        if nb_args == 8:
+                            header, init, body = phyMdlCodeGenerator.genCornerMeshCode(l[0][1:], l[2], l[3], l[4], l[5], l[6], l[7])
+                            self.struct_code.append(header)
+                            self.init_mass_code.append(init)
+                            self.comp_mass_code.append(body)
+
+                            self.writeGenericIntegratedMotionData(l[0])
+                            for i in range(0, int(l[2]) * int(l[3])):
+                                self.mat_list.append(l[0]+"_"+str(i))
+                            self.macro_list.append((l[0][1:], {"type": l[1], "L": l[2], "W": l[3]}))
+                        else:
+                            error = -105
+                            err_msg = "Error: Wrong number of parameters for corner Mesh module: " + str(l)
                             break
 
                     # else:
@@ -460,151 +542,6 @@ class PhysicsGenParser():
                                 break
 
 
-
-                    # elif l[1] == "spring":
-                    #     if nb_args == 5:
-                    #         m1 = self.moduleName(l[2])
-                    #         m2 = self.moduleName(l[3])
-                    #
-                    #         m1 = self.checkForProxies(self.moduleName(l[2]))
-                    #         m2 = self.checkForProxies(self.moduleName(l[3]))
-                    #
-                    #         body = phyMdlCodeGenerator.genSpringCode(self.moduleName(l[0][1:]), m1, m2, l[4])
-                    #         self.comp_link_code.append(body)
-                    #     elif nb_args == 6:
-                    #         m1 = self.moduleName(l[2])
-                    #         m2 = self.moduleName(l[3])
-                    #
-                    #         m1 = self.checkForProxies(self.moduleName(l[2]))
-                    #         m2 = self.checkForProxies(self.moduleName(l[3]))
-                    #
-                    #         body = phyMdlCodeGenerator.genSpringDamperCode(l[0][1:], m1, m2, l[4], l[5])
-                    #         self.comp_link_code.append(body)
-                    #     else:
-                    #         error = -10
-                    #         err_msg = "Error: Wrong number of parameters for spring module: " + str(l)
-                    #         break
-                    #
-                    # elif l[1] == "damper":
-                    #     if nb_args == 5:
-                    #         m1 = self.moduleName(l[2])
-                    #         m2 = self.moduleName(l[3])
-                    #         body = phyMdlCodeGenerator.genDamperCode(l[0][1:], m1, m2, l[4])
-                    #         self.comp_link_code.append(body)
-                    #     else:
-                    #         error = -11
-                    #         err_msg = "Error: Wrong number of parameters for damper module: " + str(l)
-                    #         break
-                    #
-                    # elif l[1] == "springDamper":
-                    #     if nb_args == 6:
-                    #         m1 = self.moduleName(l[2])
-                    #         m2 = self.moduleName(l[3])
-                    #         body = phyMdlCodeGenerator.genSpringDamperCode(l[0][1:], m1, m2, l[4], l[5])
-                    #         self.comp_link_code.append(body)
-                    #     else:
-                    #         error = -12
-                    #         err_msg = "Error: Wrong number of parameters for springDamper module: " + str(l)
-                    #         break
-                    #
-                    # elif l[1] == "contact":
-                    #     if nb_args == 7:
-                    #         m1 = self.moduleName(l[2])
-                    #         m2 = self.moduleName(l[3])
-                    #         body = phyMdlCodeGenerator.genContactCode(l[0][1:], m1, m2, l[4], l[5], l[6])
-                    #         self.comp_link_code.append(body)
-                    #     else:
-                    #         error = -13
-                    #         err_msg = "Error: Wrong number of parameters for contact module: " + str(l)
-                    #         break
-                    #
-                    # elif l[1] == "nlBow":
-                    #     if nb_args == 6:
-                    #         m1 = self.moduleName(l[2])
-                    #         m2 = self.moduleName(l[3])
-                    #         body = phyMdlCodeGenerator.genNLBowCode(l[0][1:], m1, m2, l[4], l[5])
-                    #         self.comp_link_code.append(body)
-                    #     else:
-                    #         error = -14
-                    #         err_msg = "Error: Wrong number of parameters for nlBow module: " + str(l)
-                    #         break
-                    #
-                    # elif l[1] == "nlPluck":
-                    #     if nb_args == 6:
-                    #         m1 = self.moduleName(l[2])
-                    #         m2 = self.moduleName(l[3])
-                    #         body = phyMdlCodeGenerator.genNLPluckCode(l[0][1:], m1, m2, l[4], l[5])
-                    #         self.comp_link_code.append(body)
-                    #     else:
-                    #         error = -15
-                    #         err_msg = "Error: Wrong number of parameters for nlPick module: " + str(l)
-                    #         break
-                    #
-                    # elif l[1] == "nlSpring" or l[1] == "nlSpring2":
-                    #     if nb_args == 7:
-                    #         m1 = self.moduleName(l[2])
-                    #         m2 = self.moduleName(l[3])
-                    #         body = phyMdlCodeGenerator.genSpringDamperCode_NL2(l[0][1:], m1, m2,
-                    #                                                            l[4], l[5], l[6])
-                    #         self.comp_link_code.append(body)
-                    #     else:
-                    #         error = -16
-                    #         err_msg = "Error: Wrong number of parameters for nlSpring2 module: " + str(l)
-                    #         break
-                    #
-                    # elif l[1] == "nlSpring3":
-                    #     if nb_args == 7:
-                    #         m1 = self.moduleName(l[2])
-                    #         m2 = self.moduleName(l[3])
-                    #         body = phyMdlCodeGenerator.genSpringDamperCode_NL3(l[0][1:], m1, m2,
-                    #                                                            l[4], l[5], l[6])
-                    #         self.comp_link_code.append(body)
-                    #     else:
-                    #         error = -17
-                    #         err_msg = "Error: Wrong number of parameters for nlSpring3 module: " + str(l)
-                    #         break
-                    #
-                    # elif l[1] == "frcInput":
-                    #     if nb_args == 3:
-                    #         mod_name = self.moduleName(l[0])
-                    #         body = phyMdlCodeGenerator.genForceInputCode(l[2][1:], l[0][1:])
-                    #         self.comp_link_code.append(body)
-                    #         self.inputs += 1
-                    #     else:
-                    #         error = -21
-                    #         err_msg = "Error: Wrong number of parameters for frcInput module: " + str(l)
-                    #         break
-                    #
-                    # elif l[1] == "posOutput":
-                    #     if nb_args == 3:
-                    #         mod_name = self.moduleName(l[0])
-                    #         body = phyMdlCodeGenerator.genPosOutputCode(l[2][1:], mod_name)
-                    #         self.outputs_code.append(body)
-                    #         self.outputs += 1
-                    #     else:
-                    #         error = -22
-                    #         err_msg = "Error: Wrong number of parameters for posOutput module: " + str(l)
-                    #         break
-                    #
-                    # elif l[1] == "frcOutput":
-                    #     if nb_args == 3:
-                    #         mod_name = self.moduleName(l[0])
-                    #         src = l[2][1:]
-                    #         if src[0:2] == "in":
-                    #             src = self.moduleName(l[2])
-                    #         body = phyMdlCodeGenerator.genForceOutputCode(src, mod_name)
-                    #         self.outputs_code.append(body)
-                    #         self.outputs += 1
-                    #     else:
-                    #         error = -23
-                    #         err_msg = "Error: Wrong number of parameters for frcOutput module: " + str(l)
-                    #         break
-
-                    # else:
-                    #     error = -30
-                    #     err_msg = "Unknown module name" + str(l)
-                    #     break
-
         if error:
             return error, err_msg
 
@@ -615,8 +552,9 @@ class PhysicsGenParser():
 
         if(LIB_VERSION):
             self.generated_code += 'require(\\"migen-lib\\");\n'
-            if self.integ_list:
-                self.generated_code += 'require(\\"migen-extras2\\");\n'
+            if self.macro_list:
+                self.generated_code += 'require(\\"migen-integrated\\");\n'
+                self.generated_code += 'require(\\"migen-proxies\\");\n'
 
 
         if (includeMotionData == 1):

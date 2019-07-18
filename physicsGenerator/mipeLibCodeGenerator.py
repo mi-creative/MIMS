@@ -106,6 +106,37 @@ def genStiffStringCode(name, len, M, K, K2, Z, initPos):
 
     return struct, init, eq
 
+def genChainCode(name, len, M, K, Z, initPos):
+
+    struct = "Data " + name + "(3, " + str(int(len)) + ");"
+    init = "init_multiple_masses(" + name + ", " + str(initPos) + ", " + str(initPos) + ");"
+    eq = "compute_chain(" + name + ", " + M + ", " + K + ", " + Z + ");"
+
+    return struct, init, eq
+
+
+def genMeshCode(name, length, width, M, K, Z, initPos):
+    struct = "Data " + name + "(3, " + str(int(length)*int(width)) + ");"
+    init = "init_multiple_masses(" + name + ", " + str(initPos) + ", " + str(initPos) + ");"
+    eq = "compute_mesh(" + name + ", " + str(length) \
+         + ", " + str(width) + ", " + M + ", " + K + ", " + Z + ");"
+    return struct, init, eq
+
+
+def genClosedMeshCode(name, length, width, M, K, Z, initPos):
+    struct = "Data " + name + "(3, " + str(int(length)*int(width)) + ");"
+    init = "init_multiple_masses(" + name + ", " + str(initPos) + ", " + str(initPos) + ");"
+    eq = "compute_closed_mesh(" + name + ", " + str(length) \
+         + ", " + str(width) + ", " + M + ", " + K + ", " + Z + ");"
+    return struct, init, eq
+
+
+def genCornerMeshCode(name, length, width, M, K, Z, initPos):
+    struct = "Data " + name + "(3, " + str(int(length)*int(width)) + ");"
+    init = "init_multiple_masses(" + name + ", " + str(initPos) + ", " + str(initPos) + ");"
+    eq = "compute_corner_mesh(" + name + ", " + str(length) \
+         + ", " + str(width) + ", " + M + ", " + K + ", " + Z + ");"
+    return struct, init, eq
 
 ##############################
 ####    INTERACTION ELEMENTS
@@ -169,12 +200,24 @@ def genNLPluckCode(name, connect1, connect2, K, scale):
     return s
 
 
-
-def genProxyCode(proxy, connect1, pos):
+def genStringProxyCode(proxy, connect1, pos):
     struct = "Data " + proxy + "(3);"
     init = "init_mat(" + proxy + ", 0, 0);"
-    s1 = "set_proxy_pos("+ proxy + ", " + connect1 + ", " + str(pos) + ", type=0, interp=0);"
-    s2 = "apply_proxy_frc(" + proxy + ", " + connect1 + ", " + str(pos) + ", type=0, interp=0);"
+    s1 = "set_proxy_pos_string("+ proxy + ", " + connect1 + ", " + str(pos) + ");"
+    s2 = "apply_proxy_frc_string(" + proxy + ", " + connect1 + ", " + str(pos) + ");"
+    return struct, init, s1, s2
+
+
+def genMeshProxyCode(proxy, connect1, pos_arg, length, width):
+
+    pos = pos_arg.split(':')
+
+    struct = "Data " + proxy + "(3);"
+    init = "init_mat(" + proxy + ", 0, 0);"
+    s1 = "set_proxy_pos_mesh(" + proxy + ", " + connect1 + ", " + str(length) + ", " + str(width) \
+         + ", " + str(pos[0]) + ", " + str(pos[1]) + ");"
+    s2 = "apply_proxy_frc_mesh(" + proxy + ", " + connect1 + ", " + str(length) + ", " + str(width) \
+         + ", " + str(pos[0]) + ", " + str(pos[1]) + ");"
     return struct, init, s1, s2
 
 

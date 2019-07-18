@@ -43,8 +43,12 @@ STYLES = {
     'posOutput': format('purple','bold', 'italic'),
     'frcOutput': format('purple','bold', 'italic'),
     'names': format('black','bold'),
-    'string': format('pink', 'bold'),
-    'stiffString': format('pink', 'bold'),
+    'string': format('darkCyan', 'bold'),
+    'stiffString': format('darkCyan', 'bold'),
+    'mesh': format('darkCyan', 'bold'),
+    'closedMesh': format('darkCyan', 'bold'),
+    'cornerMesh': format('darkCyan', 'bold'),
+    'chain': format('darkCyan', 'bold'),
 }
 
 
@@ -80,7 +84,10 @@ class ModelHighlighter (QSyntaxHighlighter):
             (r'\bfrcOutput\b', 0, STYLES['frcOutput']),
             (r'\bstring\b', 0, STYLES['string']),
             (r'\bstiffString\b', 0, STYLES['stiffString']),
-
+            (r'\bmesh\b', 0, STYLES['mesh']),
+            (r'\bclosedMesh\b', 0, STYLES['closedMesh']),
+            (r'\bcornerMesh\b', 0, STYLES['cornerMesh']),
+            (r'\bchain\b', 0, STYLES['chain']),
             (r'@[^ ]*', 0, STYLES['names']),
 
             # From '#' until a newline

@@ -209,7 +209,7 @@ class Main(QtWidgets.QMainWindow):
 
         self.textEdit.cursorPositionChanged.connect(self.cursorPos)
         self.textEdit.textChanged.connect(self.modelStatistics)
-        self.textEdit.setFont(QtGui.QFont('SansSerif', 10))
+        self.textEdit.setFont(QtGui.QFont('SansSerif', 14))
 
         self.textEdit.setAcceptRichText(False)
         self.textEdit.setPlaceholderText("This model is empty: start scripting!")
