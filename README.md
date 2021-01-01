@@ -1,3 +1,5 @@
+**Note:** If you're looking to use a model scripter for mi-gen~ or Faust, we recommend using the a **newer one directly integrated into mi-gen~ using NodeJS**: head over to the mi-gen repo for more information: https://github.com/mi-creative/mi-gen.
+
 # MIMS
 PyQt application for creating mass interaction models and compiling them into [FAUST](https://faust.grame.fr) dsp code or ~gen objects (for [Max/MSP](https://cycling74.com/products/max/))
 
