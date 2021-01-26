@@ -17,7 +17,7 @@ if getattr(sys, 'frozen', False):
 else:
     # we are running in a normal Python environment
     uiDir = os.getcwd()
-    
+
 htmlDir = os.path.join(uiDir, 'html/')
 iconDir = os.path.join(uiDir, 'icons/')
 styleDir = os.path.join(uiDir, 'style/')

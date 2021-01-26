@@ -286,22 +286,22 @@ class Physics2Faust():
         matString = ""
         index = 0
         for grndL in self.matModuleDict["ground"]:
-            matString += "ground(" + grndL[1] + ")"
+            matString += "mi.ground(" + grndL[1] + ")"
             index += 1
             if index < nb_mats:
                 matString += ',\n'
         for massL in self.matModuleDict["mass"]:
-            matString += "mass(" + massL[1] + ", " + massL[2]  + ", " + massL[3] + ")"
+            matString += "mi.mass(" + massL[1] + ", 0, " + massL[2]  + ", " + massL[3] + ")"
             index += 1
             if index < nb_mats:
                 matString += ',\n'
         for oscL in self.matModuleDict["osc"]:
-            matString += "osc(" + oscL[1] + ", " + oscL[2]  + ", " + oscL[3] + "," + oscL[4]  + ", " + oscL[5] + ")"
+            matString += "mi.oscil(" + oscL[1] + ", " + oscL[2]  + ", " + oscL[3] + ", 0, " + oscL[4]  + ", " + oscL[5] + ")"
             index += 1
             if index < nb_mats:
                 matString += ',\n'
         for posInL in self.matModuleDict["posInput"]:
-            matString += "posInput(" + posInL[1] + ")"
+            matString += "mi.posInput(" + posInL[1] + ")"
             index += 1
             if index < nb_mats:
                 matString += ',\n'
@@ -312,28 +312,30 @@ class Physics2Faust():
         linkString = ""
         index = 0
         for linkL in self.linkModuleDict["spring"]:
-            linkString += "spring(" + linkL[3] + "," + linkL[4]  \
+            linkString += "mi.springDamper(" + linkL[3] + "," + linkL[4]  \
                           + ", " + str(self.getPosFromMatId(linkL[1],True)) \
                           + ", " + str(self.getPosFromMatId(linkL[2],True)) + ")"
             index += 1
             if index < nb_links:
                 linkString += ',\n'
         for linkL in self.linkModuleDict["collision"]:
-            linkString += "collision(" + linkL[3] + "," + linkL[4] + "," + linkL[5]  \
+            linkString += "mi.collision(" + linkL[3] + "," + linkL[4] + "," + linkL[5]  \
                           + ", " + str(self.getPosFromMatId(linkL[1],True)) \
                           + ", " + str(self.getPosFromMatId(linkL[2],True)) + ")"
             index += 1
             if index < nb_links:
                 linkString += ',\n'
         for linkL in self.linkModuleDict["nlBow"]:
-            linkString += "nlBow(" + linkL[3] + "," + linkL[4]  \
+            linkString += "mi.nlBow(" + linkL[3] + "," + linkL[4] + ", 0" \
                           + ", " + str(self.getPosFromMatId(linkL[1],True)) \
                           + ", " + str(self.getPosFromMatId(linkL[2],True)) + ")"
             index += 1
             if index < nb_links:
                 linkString += ',\n'
         for linkL in self.linkModuleDict["nlPluck"]:
-            linkString += "nlPluck(" + linkL[3] + "," + linkL[4]  + ")"
+            linkString += "mi.nlPluck(" + linkL[3] + "," + linkL[4] + ", 0" \
+                          + ", " + str(self.getPosFromMatId(linkL[1],True)) \
+                          + ", " + str(self.getPosFromMatId(linkL[2],True)) + ")"
             index += 1
             if index < nb_links:
                 linkString += ',\n'
@@ -342,7 +344,7 @@ class Physics2Faust():
             print(linkString)
 
         s =''
-        s += """import("stdfaust.lib");\nimport("mi.lib");\n"""
+        s += """import("stdfaust.lib");\n"""
 
 
         paramString =""

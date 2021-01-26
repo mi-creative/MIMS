@@ -3,8 +3,10 @@
 @str_Z param 0.01
 @str_Zosc param 0.0
 
-@str_detK param 0.
-@str_detZ param 0.
+@det_K param 0.
+@det_Z param 0.
+
+
 
 @in1 posInput 0.
 
@@ -70,73 +72,73 @@
 @str_m59 osc str_M 0 str_Zosc 0. 0.
 @str_s1 ground 0.
 
-@str_r0 spring @in1 @str_m0 str_K str_Z
-@str_r1 spring @str_m0 @str_m1 str_K str_Z
-@str_r2 spring @str_m1 @str_m2 str_K str_Z
-@str_r3 spring @str_m2 @str_m3 str_K str_Z
-@str_r4 spring @str_m3 @str_m4 str_K str_Z
-@str_r5 spring @str_m4 @str_m5 str_K str_Z
-@str_r6 spring @str_m5 @str_m6 str_K str_Z
-@str_r7 spring @str_m6 @str_m7 str_K str_Z
-@str_r8 spring @str_m7 @str_m8 str_K str_Z
-@str_r9 spring @str_m8 @str_m9 str_K str_Z
-@str_r10 spring @str_m9 @str_m10 str_K str_Z
-@str_r11 spring @str_m10 @str_m11 str_K str_Z
-@str_r12 spring @str_m11 @str_m12 str_K str_Z
-@str_r13 spring @str_m12 @str_m13 str_K str_Z
-@str_r14 spring @str_m13 @str_m14 str_K str_Z
-@str_r15 spring @str_m14 @str_m15 str_K str_Z
-@str_r16 spring @str_m15 @str_m16 str_K str_Z
-@str_r17 spring @str_m16 @str_m17 str_K str_Z
-@str_r18 spring @str_m17 @str_m18 str_K str_Z
-@str_r19 spring @str_m18 @str_m19 str_K str_Z
+@str_r0 springDamper @in1 @str_m0 str_K str_Z
+@str_r1 springDamper @str_m0 @str_m1 str_K str_Z
+@str_r2 springDamper @str_m1 @str_m2 str_K str_Z
+@str_r3 springDamper @str_m2 @str_m3 str_K str_Z
+@str_r4 springDamper @str_m3 @str_m4 str_K str_Z
+@str_r5 springDamper @str_m4 @str_m5 str_K str_Z
+@str_r6 springDamper @str_m5 @str_m6 str_K str_Z
+@str_r7 springDamper @str_m6 @str_m7 str_K str_Z
+@str_r8 springDamper @str_m7 @str_m8 str_K str_Z
+@str_r9 springDamper @str_m8 @str_m9 str_K str_Z
+@str_r10 springDamper @str_m9 @str_m10 str_K str_Z
+@str_r11 springDamper @str_m10 @str_m11 str_K str_Z
+@str_r12 springDamper @str_m11 @str_m12 str_K str_Z
+@str_r13 springDamper @str_m12 @str_m13 str_K str_Z
+@str_r14 springDamper @str_m13 @str_m14 str_K str_Z
+@str_r15 springDamper @str_m14 @str_m15 str_K str_Z
+@str_r16 springDamper @str_m15 @str_m16 str_K str_Z
+@str_r17 springDamper @str_m16 @str_m17 str_K str_Z
+@str_r18 springDamper @str_m17 @str_m18 str_K str_Z
+@str_r19 springDamper @str_m18 @str_m19 str_K str_Z
 
-@str_r20 spring @str_m19 @str_m20 str_K str_Z
+@str_r20 springDamper @str_m19 @str_m20 str_K str_Z
 @det_1 contact @str_m19 @str_m20 det_K det_Z 0.
 
-@str_r21 spring @str_m20 @str_m21 str_K str_Z
-@str_r22 spring @str_m21 @str_m22 str_K str_Z
-@str_r23 spring @str_m22 @str_m23 str_K str_Z
-@str_r24 spring @str_m23 @str_m24 str_K str_Z
-@str_r25 spring @str_m24 @str_m25 str_K str_Z
-@str_r26 spring @str_m25 @str_m26 str_K str_Z
-@str_r27 spring @str_m26 @str_m27 str_K str_Z
-@str_r28 spring @str_m27 @str_m28 str_K str_Z
-@str_r29 spring @str_m28 @str_m29 str_K str_Z
-@str_r30 spring @str_m29 @str_m30 str_K str_Z
-@str_r31 spring @str_m30 @str_m31 str_K str_Z
-@str_r32 spring @str_m31 @str_m32 str_K str_Z
-@str_r33 spring @str_m32 @str_m33 str_K str_Z
-@str_r34 spring @str_m33 @str_m34 str_K str_Z
-@str_r35 spring @str_m34 @str_m35 str_K str_Z
-@str_r36 spring @str_m35 @str_m36 str_K str_Z
-@str_r37 spring @str_m36 @str_m37 str_K str_Z
-@str_r38 spring @str_m37 @str_m38 str_K str_Z
-@str_r39 spring @str_m38 @str_m39 str_K str_Z
+@str_r21 springDamper @str_m20 @str_m21 str_K str_Z
+@str_r22 springDamper @str_m21 @str_m22 str_K str_Z
+@str_r23 springDamper @str_m22 @str_m23 str_K str_Z
+@str_r24 springDamper @str_m23 @str_m24 str_K str_Z
+@str_r25 springDamper @str_m24 @str_m25 str_K str_Z
+@str_r26 springDamper @str_m25 @str_m26 str_K str_Z
+@str_r27 springDamper @str_m26 @str_m27 str_K str_Z
+@str_r28 springDamper @str_m27 @str_m28 str_K str_Z
+@str_r29 springDamper @str_m28 @str_m29 str_K str_Z
+@str_r30 springDamper @str_m29 @str_m30 str_K str_Z
+@str_r31 springDamper @str_m30 @str_m31 str_K str_Z
+@str_r32 springDamper @str_m31 @str_m32 str_K str_Z
+@str_r33 springDamper @str_m32 @str_m33 str_K str_Z
+@str_r34 springDamper @str_m33 @str_m34 str_K str_Z
+@str_r35 springDamper @str_m34 @str_m35 str_K str_Z
+@str_r36 springDamper @str_m35 @str_m36 str_K str_Z
+@str_r37 springDamper @str_m36 @str_m37 str_K str_Z
+@str_r38 springDamper @str_m37 @str_m38 str_K str_Z
+@str_r39 springDamper @str_m38 @str_m39 str_K str_Z
 
-@str_r40 spring @str_m39 @str_m40 str_K str_Z
+@str_r40 springDamper @str_m39 @str_m40 str_K str_Z
 @det_2 contact @str_m39 @str_m40 det_K det_Z 0.
 
-@str_r41 spring @str_m40 @str_m41 str_K str_Z
-@str_r42 spring @str_m41 @str_m42 str_K str_Z
-@str_r43 spring @str_m42 @str_m43 str_K str_Z
-@str_r44 spring @str_m43 @str_m44 str_K str_Z
-@str_r45 spring @str_m44 @str_m45 str_K str_Z
-@str_r46 spring @str_m45 @str_m46 str_K str_Z
-@str_r47 spring @str_m46 @str_m47 str_K str_Z
-@str_r48 spring @str_m47 @str_m48 str_K str_Z
-@str_r49 spring @str_m48 @str_m49 str_K str_Z
-@str_r50 spring @str_m49 @str_m50 str_K str_Z
-@str_r51 spring @str_m50 @str_m51 str_K str_Z
-@str_r52 spring @str_m51 @str_m52 str_K str_Z
-@str_r53 spring @str_m52 @str_m53 str_K str_Z
-@str_r54 spring @str_m53 @str_m54 str_K str_Z
-@str_r55 spring @str_m54 @str_m55 str_K str_Z
-@str_r56 spring @str_m55 @str_m56 str_K str_Z
-@str_r57 spring @str_m56 @str_m57 str_K str_Z
-@str_r58 spring @str_m57 @str_m58 str_K str_Z
-@str_r59 spring @str_m58 @str_m59 str_K str_Z
-@str_r60 spring @str_m59 @str_s1 str_K str_Z
+@str_r41 springDamper @str_m40 @str_m41 str_K str_Z
+@str_r42 springDamper @str_m41 @str_m42 str_K str_Z
+@str_r43 springDamper @str_m42 @str_m43 str_K str_Z
+@str_r44 springDamper @str_m43 @str_m44 str_K str_Z
+@str_r45 springDamper @str_m44 @str_m45 str_K str_Z
+@str_r46 springDamper @str_m45 @str_m46 str_K str_Z
+@str_r47 springDamper @str_m46 @str_m47 str_K str_Z
+@str_r48 springDamper @str_m47 @str_m48 str_K str_Z
+@str_r49 springDamper @str_m48 @str_m49 str_K str_Z
+@str_r50 springDamper @str_m49 @str_m50 str_K str_Z
+@str_r51 springDamper @str_m50 @str_m51 str_K str_Z
+@str_r52 springDamper @str_m51 @str_m52 str_K str_Z
+@str_r53 springDamper @str_m52 @str_m53 str_K str_Z
+@str_r54 springDamper @str_m53 @str_m54 str_K str_Z
+@str_r55 springDamper @str_m54 @str_m55 str_K str_Z
+@str_r56 springDamper @str_m55 @str_m56 str_K str_Z
+@str_r57 springDamper @str_m56 @str_m57 str_K str_Z
+@str_r58 springDamper @str_m57 @str_m58 str_K str_Z
+@str_r59 springDamper @str_m58 @str_m59 str_K str_Z
+@str_r60 springDamper @str_m59 @str_s1 str_K str_Z
 
 @out1 posOutput @str_m15 
 @out2 posOutput @str_m35
